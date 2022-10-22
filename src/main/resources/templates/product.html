@@ -1,0 +1,39 @@
+<html html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/navbar">
+<body>
+<div layout:fragment="site_content">
+    <div class="row row-cols-3 g-2 mt-5">
+        <div class="card" style="width: 18rem;">
+            <img th:src="@{'/getImage/'+${product.productImage}}" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${product.title}"></h5>
+                <p class="card-text" th:text="${product.price}+' Tenge'"></p>
+                <a th:href="@{'/korzina/'+${product.id}}" class="btn btn-primary">Add to Korzina</a>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;" th:each="coment:${comments}" th:if="${product.id==coment.product.id}">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${coment.users.fullName}"></h5>
+                <h6 class="card-subtitle mb-2 text-muted" th:text="${coment.users.email}"></h6>
+                <p class="card-text" th:value="${coment.users.id==coment.id}" th:text="${coment.comment}"></p>
+                <form th:action="@{'/comment/delete'}" method="post">
+                <button sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MODERATOR')"
+                        class="btn btn-danger" th:value="${coment.id}" name="comment_id"> Delete
+                </button>
+                </form>
+            </div>
+        </div>
+        <form th:action="@{'/comment/add'}" method="post">
+            <div class="form-floating mb-3">
+                <input type="hidden" th:value="${product.id}" name="product_id">
+                <input type="text" class="form-control" id="floatingInput" name="comment_title">
+                <label for="floatingInput">Review</label>
+                <button type="submit">Add Review</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

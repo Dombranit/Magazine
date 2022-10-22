@@ -1,0 +1,76 @@
+<html html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/html">
+<head>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+            crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <title>Shop</title>
+</head>
+<body>
+<header>
+    <div>
+        <nav class="navbar bg-success p-2 text-dark bg-opacity-75">
+            <div class="container-fluid">
+                <a class="navbar-brand text-white" th:href="@{'/product'}">Shop</a>
+                <ul class="nav ms-auto">
+                    <li sec:authorize="isAnonymous()" class="nav-item mx-auto">
+                        <a th:href="@{'/login'}" class="nav-link text-white">Login</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item">
+                        <a th:href="@{'/profile'}" class="nav-link text-dark fw-bold"
+                           th:text="${currentUser.fullName}"></a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item">
+                        <a class="nav-link text-white" href="JavaScript:void(0)"
+                           onclick="document.getElementById('logoutFormId').submit()">Logout</a>
+                    </li>
+                    <li >
+                        <a class="nav-link" th:href="@{'/korzina'}">Korzina</a>
+                    </li>
+                </ul>
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                     aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Shop</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" th:href="@{'/product'}">Products</a>
+                            </li>
+                            <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')" class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    Moderator Menu
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" th:href="@{'/product/admin'}">Products</a></li>
+                                    <li><a class="dropdown-item" th:href="@{'/category'}">Categories</a></li>
+                                    <li><a class="dropdown-item" th:href="@{'/users'}">Users</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <form th:action="@{'/logout'}" method="post" id="logoutFormId" sec:authorize="isAuthenticated()"></form>
+            </div>
+        </nav>
+    </div>
+</header>
+<div class="container">
+    <div layout:fragment="site_content">
+    </div>
+</div>
+</body>
+</html>

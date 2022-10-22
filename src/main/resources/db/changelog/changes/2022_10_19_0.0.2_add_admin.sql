@@ -1,0 +1,2 @@
+insert into users (archive, avatar, email, full_name, password, korzina_id) values
+    (false,'ed1ae78a01e18a2891de4028ad45eab8a921afd7','admin@mail.ru','admin','$2a$10$nV.efPKsVCuDmFDx0bQf9uyH3cKv589dIgRfiqGH0JMm0FHKqsI2q',null);

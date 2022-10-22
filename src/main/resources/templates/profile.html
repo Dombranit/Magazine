@@ -1,0 +1,26 @@
+<html html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/navbar">
+<body>
+<div layout:fragment="site_content">
+    <img th:src="@{'/getAvatar/'+${currentUser.avatar}}" class="rounded float-start" >
+    <div class="col-5 offset-5">
+        <h1>Upload Picture</h1>
+        <form th:action="@{'/uploadAvatar'}" method="post" enctype="multipart/form-data">
+            <div class="row mt-3">
+                <div class="col-12">
+                    <label class="form-label">Choose User Avatar</label>
+                    <input class="form-control" type="file" name="user_avatar">
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <button class="btn btn-success" type="submit">Upload Picture</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

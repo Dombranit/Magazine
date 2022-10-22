@@ -1,0 +1,18 @@
+<html html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/navbar" xmlns="http://www.w3.org/1999/html">
+<body>
+<div layout:fragment="site_content">
+    <div class="modal-body">
+        <form th:action="@{'/category/edit'}" method="post">
+            <input type="hidden" th:value="${category.id}" name="category_id">
+            <label>Name</label>
+            <input type="text" th:value="${category.name}" name="category_name">
+            <button type="submit" class="btn btn-success">Save</button>
+        </form>
+    </div>
+</div>
+</div>
+</body>
+</html>

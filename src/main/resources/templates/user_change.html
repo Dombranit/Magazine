@@ -1,0 +1,77 @@
+<html html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/navbar" xmlns="http://www.w3.org/1999/html">
+<body>
+<div layout:fragment="site_content">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProduct">
+        Add User
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="addProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addProductLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form th:action="@{'/register'}" method="post">
+                    <div class="modal-body">
+                        <label>Email:</label>
+                        <input type="email" name="user_email" class="form-control" required>
+                        <label>Password:</label>
+                        <input type="password" name="user_password" class="form-control" required>
+                        <label>Retype Password:</label>
+                        <input type="password" name="re_user_password" class="form-control" required>
+                        <label>User_FullName:</label>
+                        <input type="text" name="user_fullName" class="form-control" required   >
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-success float-right">Add User</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container task">
+        <div class="row mt-5">
+            <div class="col-16">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Full Name</th>
+                        <th>Role</th>
+                        <th>Edit</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user:${Users}">
+                        <td th:text="${user.id}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.fullName}"></td>
+                        <td th:text="${user.roles}"></td>
+                        <td>
+                            <a th:href="@{'/users/'+${user.id}}">
+                                <button type="button" class="btn btn-primary">
+                                    Edit
+                                </button>
+                            </a>
+                        </td>
+                        <td>
+                            <form th:action="@{'/users/delete'}" method="post">
+                                <button type="submit" class="btn btn-danger" th:value="${user.id}" name="user_id">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

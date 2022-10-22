@@ -1,0 +1,74 @@
+<html html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/navbar" xmlns="http://www.w3.org/1999/html">
+<body>
+<div layout:fragment="site_content">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProduct">
+        Add Product
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="addProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addProductLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form th:action="@{'/product/create'}" method="post">
+                    <div class="modal-body">
+                        <label>Title</label>
+                        <input type="text" name="product_title">
+                        <label>Price</label>
+                        <input type="text" name="product_price">
+                        <label>Category</label>
+                        <select name="product_cat_id">
+                            <option th:each="cat:${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Add Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container task">
+        <div class="row mt-5">
+            <div class="col-16">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="prod:${products}">
+                        <td th:text="${prod.id}"></td>
+                        <td th:text="${prod.title}"></td>
+                        <td>
+                            <a th:href="@{'/product/edit/'+${prod.id}}">
+                                <button type="button" class="btn btn-primary">
+                                    Edit
+                                </button>
+                            </a>
+                        </td>
+                        <td>
+                            <form th:action="@{'/product/delete'}" method="post">
+                                <button type="submit" class="btn btn-danger" th:value="${prod.id}" name="product_id">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

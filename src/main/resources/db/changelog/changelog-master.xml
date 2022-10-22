@@ -1,0 +1,58 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="2022_10_17_0.0.1_create_init_tables" author="Zhasulan">
+        <sqlFile
+                dbms="postgresql"
+                encoding="utf8"
+                endDelimiter=";"
+                path="changes/2022_10_17_0.0.1_create_init_tables.sql"
+                relativeToChangelogFile="true"
+                splitStatements="true"
+                stripComments="true"/>
+    </changeSet>
+    <changeSet id="2022_10_19_0.0.2_add_admin" author="Zhasulan">
+        <sqlFile
+                dbms="postgresql"
+                encoding="utf8"
+                endDelimiter=";"
+                path="changes/2022_10_19_0.0.2_add_admin.sql"
+                relativeToChangelogFile="true"
+                splitStatements="true"
+                stripComments="true"/>
+    </changeSet>
+    <changeSet id="2022_10_19_0.0.3_add_roles" author="Zhasulan">
+        <sqlFile
+                dbms="postgresql"
+                encoding="utf8"
+                endDelimiter=";"
+                path="changes/2022_10_19_0.0.3_add_role.sql"
+                relativeToChangelogFile="true"
+                splitStatements="true"
+                stripComments="true"/>
+    </changeSet>
+    <changeSet id="2022_10_19_0.0.4_add_products" author="Zhasulan">
+        <sqlFile
+                dbms="postgresql"
+                encoding="utf8"
+                endDelimiter=";"
+                path="changes/2022_10_19_0.0.4_add_products.sql"
+                relativeToChangelogFile="true"
+                splitStatements="true"
+                stripComments="true"/>
+    </changeSet>
+    <changeSet id="2022_10_22_0.0.1_add_categories" author="Zhasulan">
+        <sqlFile
+                dbms="postgresql"
+                encoding="utf8"
+                endDelimiter=";"
+                path="changes/2022_10_22_0.0.1_add_categories.sql"
+                relativeToChangelogFile="true"
+                splitStatements="true"
+                stripComments="true"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,22 @@
+<html html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/navbar">
+<body>
+<div layout:fragment="site_content">
+    <div class="row row-cols-3 g-2 mt-5">
+    <div class="card " style="width: 18rem;" th:each="prod:${productList}">
+        <img th:src="@{'/getImage/'+${prod.productImage}}" class="card-img-top">
+            <div class="card-body">
+                <input type="hidden" th:value="${prod.id}">
+                <h5 class="card-title" th:text="${prod.title}"></h5>
+                <p class="card-text" th:text="${prod.price}+'Tenge'"></p>
+                <a th:href="@{'/product/'+${prod.id}}" class="btn btn-primary">About</a>
+                <a th:href="@{'/korzina/'+${prod.id}}" class="btn btn-success" sec:authorize="isAuthenticated()">Add to Korzina</a>
+                <a th:href="@{'/korzina/empty/'+${prod.id}}" class="btn btn-success" sec:authorize="isAnonymous()">Add to Korzina</a>
+            </div>
+    </div>
+    </div>
+</div>
+</body>
+</html>
