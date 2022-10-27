@@ -1,15 +1,14 @@
 package kz.bitlab.Magazine.Entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDetails extends BaseEntity {
@@ -19,4 +18,12 @@ public class OrderDetails extends BaseEntity {
     private BigDecimal price;
     @ManyToOne
     private Product product;
+
+    public OrderDetails (Orders orders, Product product ,Long amount){
+        this.orders = orders;
+        this.amount=new BigDecimal(amount);
+        this.product=product;
+        this.price=new BigDecimal(String.valueOf(product.getPrice()));
+    }
+
 }

@@ -4,9 +4,10 @@ import kz.bitlab.Magazine.Entity.Category;
 import kz.bitlab.Magazine.Entity.Korzina;
 import kz.bitlab.Magazine.Entity.Product;
 import kz.bitlab.Magazine.Entity.Users;
+import kz.bitlab.Magazine.dto.KorzinaDetailsDto;
+import kz.bitlab.Magazine.dto.KorzinaDto;
 import kz.bitlab.Magazine.dto.ProductDto;
 import kz.bitlab.Magazine.mapper.ProductMapper;
-import kz.bitlab.Magazine.mapper.UserMapper;
 import kz.bitlab.Magazine.repository.ProductRepository;
 import kz.bitlab.Magazine.service.KorzinaService;
 import kz.bitlab.Magazine.service.ProductService;
@@ -14,7 +15,12 @@ import kz.bitlab.Magazine.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
+import java.net.http.HttpRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -26,7 +32,6 @@ public class ProductServiceImpl implements ProductService {
     private UserService userService;
     @Autowired
     private KorzinaService korzinaService;
-
     @Override
     public void removeProductFromKorzina(Long productdId, String email) {
         Users users = userService.getUserByEmail(email);
@@ -56,11 +61,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void addToKorzina(Long productId) {
-        Korzina korzina = new Korzina();
-        korzinaService.addProducts(korzina, productId);
-        korzinaService.createEmptyKorzina(productId);
-    }
+    public void addToKorzina(Long productId) {}
 
     @Override
     public List<ProductDto> getProducts() {
@@ -68,8 +69,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createProduct(Product product) {
-        return productRepository.save(product);
+    public void createProduct(Product product) {
+        productRepository.save(product);
     }
 
     @Override
@@ -92,6 +93,9 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
     }
 
-
+    @Override
+    public List<Product> sortedProduct(Category category) {
+        return productRepository.findAllByCategories(category);
+    }
 }
 

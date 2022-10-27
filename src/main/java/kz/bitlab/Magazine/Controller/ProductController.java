@@ -35,32 +35,35 @@ public class ProductController {
 
 
     @GetMapping
-    public String getProducts(Model model){
+    public String getProducts(Model model) {
         List<ProductDto> products = productService.getProducts();
-        model.addAttribute( "productList",products);
-        model.addAttribute("currentUser",userService.getUserData());
+        model.addAttribute("productList", products);
+        model.addAttribute("currentUser", userService.getUserData());
+        List<Category> categoryList = categoryService.getCategories();
+        model.addAttribute("categories", categoryList);
         return "homepage";
     }
+
     @GetMapping(value = "/admin")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MODERATOR')")
-    public String getProductList (Model model,Long id){
+    public String getProductList(Model model) {
         List<Product> productList = productService.getProductsToAdmin();
-        model.addAttribute("products",productList);
+        model.addAttribute("products", productList);
         List<Category> categories = categoryService.getCategories();
-        model.addAttribute("categories",categories);
-        model.addAttribute("currentUser",userService.getUserData());
+        model.addAttribute("categories", categories);
+        model.addAttribute("currentUser", userService.getUserData());
         return "product_change";
     }
 
     @PostMapping("/create")
     @PreAuthorize("hasAnyRole('ROLE_MODERATOR','ROLE_ADMIN')")
-    public String createProduct (@RequestParam(name = "product_title")String title,
-                                 @RequestParam(name = "product_price") BigDecimal price,
-                                 @RequestParam(name = "product_cat_id")Long catId) {
+    public String createProduct(@RequestParam(name = "product_title") String title,
+                                @RequestParam(name = "product_price") BigDecimal price,
+                                @RequestParam(name = "product_cat_id") Long catId) {
         Product product = new Product();
         List<Category> categories = product.getCategories();
-        if(categories==null){
-            categories=new ArrayList<>();
+        if (categories == null) {
+            categories = new ArrayList<>();
         }
         categories.add(categoryService.getCategory(catId));
         product.setTitle(title);
@@ -69,25 +72,27 @@ public class ProductController {
         productService.createProduct(product);
         return "redirect:/product/admin";
     }
+
     @GetMapping(value = "/edit/{id}")
-    public String detEditProd(Model model,@PathVariable(name = "id")Long id){
+    public String detEditProd(Model model, @PathVariable(name = "id") Long id) {
         Product product = productService.getProductById(id);
-        model.addAttribute("products",product);
-        model.addAttribute("categories",product.getCategories());
+        model.addAttribute("products", product);
+        model.addAttribute("categories", product.getCategories());
         List<Comments> commentsList = commentService.getComments();
-        model.addAttribute("comments",commentsList);
-        model.addAttribute("currentUser",userService.getUserData());
+        model.addAttribute("comments", commentsList);
+        model.addAttribute("currentUser", userService.getUserData());
         return "editProduct";
     }
+
     @PostMapping(value = "/edit")
-    public String saveProduct(@RequestParam(name = "product_id")Long prodId,
-                              @RequestParam(name = "product_title")String title,
-                              @RequestParam(name = "product_price")BigDecimal price,
-                              @RequestParam(name = "product_cat")Long catId) {
+    public String saveProduct(@RequestParam(name = "product_id") Long prodId,
+                              @RequestParam(name = "product_title") String title,
+                              @RequestParam(name = "product_price") BigDecimal price,
+                              @RequestParam(name = "product_cat") Long catId) {
         Product product = productService.getProductById(prodId);
-        if(product !=null){
+        if (product != null) {
             List<Category> categories = product.getCategories();
-            if(categories!=null){
+            if (categories != null) {
                 categories.add(categoryService.getCategory(catId));
                 product.setCategories(categories);
                 product.setTitle(title);
@@ -100,19 +105,30 @@ public class ProductController {
     }
 
     @GetMapping(value = "/{id}")
-    public String getProductbyId ( Model model,@PathVariable(name = "id")Long id) {
+    public String getProductbyId(Model model, @PathVariable(name = "id") Long id) {
         Product product = productService.getProductById(id);
         model.addAttribute("product", productMapper.toDto(product));
-        model.addAttribute("currentUser",userService.getUserData());
+        model.addAttribute("currentUser", userService.getUserData());
         List<Comments> commentsList = commentService.getComments();
-        model.addAttribute("comments",commentsList);
+        model.addAttribute("comments", commentsList);
         return "product";
     }
+
     @PostMapping(value = "/delete")
     @PreAuthorize("hasAuthority('ROLE_MODERATOR')")
-    public String deleteProduct (@RequestParam(name = "product_id") Long id) {
+    public String deleteProduct(@RequestParam(name = "product_id") Long id) {
         productService.deleteProduct(id);
         return "redirect:/product/admin";
+    }
+    @GetMapping(value = "/sorted/{id}")
+    public String showByCat(Model model,@PathVariable(name = "id") Long id){
+        Category category = categoryService.getCategory(id);
+        List<Product> productList = productService.sortedProduct(category);
+        model.addAttribute("sortedProduct",productList);
+        List<Category> categories = categoryService.getCategories();
+        model.addAttribute("categories",categories);
+        model.addAttribute("currentUser",userService.getUserData());
+        return "sorted";
     }
 
 }

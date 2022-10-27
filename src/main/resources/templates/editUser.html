@@ -5,14 +5,11 @@
 <body>
 <div layout:fragment="site_content">
     <div class="modal-body">
-        <form th:action="@{'/editUser'}" method="post">
-            <input type="hidden" th:value="${user.id}" name="user_id">
-            <label>Email</label>
-            <input type="text" th:value="${user.email}" name="user_email">
+        <img width="250" height="250" th:src="@{'/getAvatar/'+${user.avatar}}" class="rounded float-start">
+        <label>Email</label>
+            <span th:text="${user.email}"></span>
             <label>Full Name</label>
-            <input type="text" th:value="${user.fullName}" name="user_fullName">
-            <button type="submit" class="btn btn-success">Save</button>
-        </form>
+            <span th:text="${user.fullName}"></span>
     </div>
     <div class="col">
         <div>

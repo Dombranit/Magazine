@@ -1,0 +1,28 @@
+<html html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/navbar">
+<body>
+<div layout:fragment="site_content">
+    <h3>All Sorted Products</h3>
+    <a th:href="@{'/product/sorted/'+${cat.id}}" th:each="cat:${categories}">
+        <button th:text="${cat.name}" th:value="${cat.id}" class="btn btn-primary"></button>
+    </a>
+    <div class="row row-cols-3 g-2 mt-5">
+        <div class="card " style="width: 18rem;" th:each="prod:${sortedProduct}">
+            <img width="250" height="350" th:src="@{'/getImage/'+${prod.productImage}}" class="card-img-top">
+            <div class="card-body">
+                <input type="hidden" th:value="${prod.id}">
+                <h5 class="card-title" th:text="${prod.title}"></h5>
+                <p class="card-text" th:text="${prod.price}+'Tenge'"></p>
+                <a th:href="@{'/product/'+${prod.id}}" class="btn btn-primary">About</a>
+                <a th:href="@{'/korzina/'+${prod.id}}" class="btn btn-success" sec:authorize="isAuthenticated()">Add to
+                    Korzina</a>
+                <a th:href="@{'/korzina/empty/'+${prod.id}}" class="btn btn-success" sec:authorize="isAnonymous()">Add
+                    to Korzina</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

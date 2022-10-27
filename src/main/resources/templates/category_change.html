@@ -4,6 +4,7 @@
       layout:decorate="layout/navbar" xmlns="http://www.w3.org/1999/html">
 <body>
 <div layout:fragment="site_content">
+    <h3 class="fw-bold mt-3">Category Change</h3>
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProduct">
         Add Category
     </button>
@@ -29,6 +30,36 @@
             </div>
         </div>
     </div>
+    <!--    EditModal-->
+    <div class="modal fade" id="editCategory" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
+                    <div id="editCategoryAlert" style="visibility: hidden;" class="alert alert-danger" role="alert">
+                        Error has occurred!
+                    </div>
+                    <div id="editCourseAlertSuccess" style="visibility: hidden;" class="alert alert-success" role="alert">
+                        Success!
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="mx-auto mb-5">
+                        <input type="hidden" id="editCategoryId">
+                        <div class="mb-3">
+                            <label for="editCategoryName" class="form-label">Category Name</label>
+                            <input type="text" class="form-control" id="editCategoryName" required>
+                        </div>
+                        <button id="editCategoryCloseBtn" type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">Закрыть
+                        </button>
+                        <button  type="submit" class="btn btn-success" onclick="updateCategory()">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container task">
         <div class="row mt-5">
             <div class="col-16">
@@ -43,13 +74,8 @@
                     <tr th:each="cat:${categories}">
                         <td th:text="${cat.id}"></td>
                         <td th:text="${cat.name}"></td>
-                        <td>
-                            <a th:href="@{'/category/edit/'+${cat.id}}">
-                                <button type="button" class="btn btn-primary">
-                                    Edit
-                                </button>
-                            </a>
-                        </td>
+                        <td><a class="btn btn-primary" th:onclick="'getCategory('+${cat.id}+')'"
+                               data-bs-toggle="modal" data-bs-target="#editCategory">EDIT</a></td>
                         <td>
                             <form th:action="@{'/category/delete'}" method="post">
                                 <button type="submit" class="btn btn-danger" th:value="${cat.id}" name="category_id">

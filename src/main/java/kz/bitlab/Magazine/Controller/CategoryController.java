@@ -1,6 +1,7 @@
 package kz.bitlab.Magazine.Controller;
 
 import kz.bitlab.Magazine.Entity.Category;
+import kz.bitlab.Magazine.Entity.Product;
 import kz.bitlab.Magazine.service.CategoryService;
 import kz.bitlab.Magazine.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

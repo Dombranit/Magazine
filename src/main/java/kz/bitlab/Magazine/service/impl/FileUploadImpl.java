@@ -25,7 +25,7 @@ public class FileUploadImpl implements FileUploadService {
     @Override
     public boolean uploadAvatar(MultipartFile file, Users users) {
         try {
-            String foleToken=DigestUtils.sha1Hex(users.getId()+"_!");
+            String foleToken=DigestUtils.sha1Hex(users.getId()+"_!&^");
             String filename = foleToken + ".jpg";
             byte bytes [] = file.getBytes();
             Path path = Paths.get(targetURL+"/",filename);

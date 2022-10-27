@@ -1,0 +1,53 @@
+<html html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/navbar" xmlns="http://www.w3.org/1999/html">
+<body>
+<div layout:fragment="site_content">
+<body>
+<div class="container task">
+    <h2>My order</h2>
+    <div class="row mt-5">
+        <div class="col-16">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>@Email</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Address</th>
+                    <th>Price</th>
+                    <th>Edit</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="ooor:${orders}">
+                    <td th:text="${ooor.user.email}"></td>
+                    <td style="speak-date: mdy" th:text="${ooor.getCreated().getDate()}"></td>
+                    <td th:text="${ooor.getOrderStatus().name()}" th:if="${ooor.getOrderStatus().equals(ooor.getOrderStatus().NEW)}" style="color: blue"></td>
+                    <td th:text="${ooor.getOrderStatus().name()}" th:if="${ooor.getOrderStatus().equals(ooor.getOrderStatus().APPROVED)}" style="color: green"></td>
+                    <td th:text="${ooor.getOrderStatus().name()}" th:if="${ooor.getOrderStatus().equals(ooor.getOrderStatus().CANCELED)}" style="color: red"></td>
+                    <td th:text="${ooor.getOrderStatus().name()}" th:if="${ooor.getOrderStatus().equals(ooor.getOrderStatus().CLOSED)}" style="color: lime"></td>
+                    <td th:text="${ooor.getOrderStatus().name()}" th:if="${ooor.getOrderStatus().equals(ooor.getOrderStatus().PAID)}" style="color: black"></td>
+                    <td th:text="${ooor.getAddress()}"></td>
+                    <td th:text="${ooor.getTotalPrice()}"></td>
+                    <td>
+                        <a th:href="@{'/order/pay/'+${ooor.id}}" th:if="${ooor.getOrderStatus().equals(ooor.getOrderStatus().APPROVED)}">
+                            <button th:if="${ooor.getOrderStatus().APPROVED.equals(ooor.getOrderStatus())}"type="button" class="btn btn-primary" >
+                              Pay
+                            </button>
+                        </a>
+                        <a th:href="@{'/order/closed/'+${ooor.id}}" th:if="${ooor.getOrderStatus().equals(ooor.getOrderStatus().CLOSED)}">
+                            <button th:if="${ooor.getOrderStatus().equals(ooor.getOrderStatus().CLOSED)}" type="button" class="btn btn-success">About</button>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</div>
+</body>
+</html>

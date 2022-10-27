@@ -24,7 +24,7 @@
                         <label>Retype Password:</label>
                         <input type="password" name="re_user_password" class="form-control" required>
                         <label>User_FullName:</label>
-                        <input type="text" name="user_fullName" class="form-control" required   >
+                        <input type="text" name="user_fullName" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <button class="btn btn-success float-right">Add User</button>
@@ -51,7 +51,10 @@
                         <td th:text="${user.id}"></td>
                         <td th:text="${user.email}"></td>
                         <td th:text="${user.fullName}"></td>
-                        <td th:text="${user.roles}"></td>
+                        <td>
+                            <div th:each="role:${user.roles}" th:text="${role.role}">
+                            </div>
+                        </td>
                         <td>
                             <a th:href="@{'/users/'+${user.id}}">
                                 <button type="button" class="btn btn-primary">

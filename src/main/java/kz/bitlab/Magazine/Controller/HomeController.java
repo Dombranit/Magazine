@@ -44,17 +44,17 @@ public class HomeController {
     }
     @PostMapping(value = "/uploadImage")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MODERATOR')")
-    public String uploadImage(@RequestParam(name = "product_image") MultipartFile file,
+    public String uploadImage(@RequestParam(name = "product_image") MultipartFile image,
                               @RequestParam(name = "product_id")Long id) {
-        if (file.getContentType().equals("image/jpeg") || file.getContentType().equals("image/png")) {
-            fileUploadService.uploadImage(file,productService.getProductById(id));
+        if (image.getContentType().equals("image/jpeg") || image.getContentType().equals("image/png")) {
+            fileUploadService.uploadImage(image,productService.getProductById(id));
         }
-        return "redirect:/product/"+id;
+        return "redirect:/product/edit/"+id;
     }
 
-    @GetMapping(value = "/getAvatar/{token}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/getAvatar/{tokenn}", produces = MediaType.IMAGE_JPEG_VALUE)
     @PreAuthorize("isAuthenticated()")
-    public @ResponseBody byte[] getAvatar(@PathVariable(name = "token", required = false) String token) throws IOException {
+    public @ResponseBody byte[] getAvatar(@PathVariable(name = "tokenn", required = false) String token) throws IOException {
 
         String pictureURL = loadURL + "def_user.jpg";
         if(token!=null){
@@ -90,6 +90,6 @@ public class HomeController {
             in = resource.getInputStream();
         }
         return IOUtils.toByteArray(in);
-
     }
+
 }

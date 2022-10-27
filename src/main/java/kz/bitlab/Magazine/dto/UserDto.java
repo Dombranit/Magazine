@@ -13,5 +13,6 @@ public class UserDto {
     private String password;
     private String rePassword;
     private String avatar;
+    private String address;
 
 }

@@ -47,12 +47,14 @@ public class UserController {
     public String register(@RequestParam(name = "user_email") String email,
                            @RequestParam(name = "user_password") String password,
                            @RequestParam(name = "re_user_password") String repassword,
-                           @RequestParam(name = "user_fullName") String fullname) {
+                           @RequestParam(name = "user_fullName") String fullname,
+                           @RequestParam(name = "user_address")String address) {
         UserDto newUser = new UserDto();
         newUser.setEmail(email);
         newUser.setPassword(password);
         newUser.setFullName(fullname);
         newUser.setRePassword(repassword);
+        newUser.setAddress(address);
         if (userService.createUser(newUser) != null) {
             return "/login";
         }
@@ -62,36 +64,46 @@ public class UserController {
 
     @GetMapping(value = "/users")
     @PreAuthorize("hasAnyRole('ROLE_MODERATOR','ROLE_ADMIN')")
-    public String getUsers(Model model){
+    public String getUsers(Model model) {
         List<Users> usersList = userService.getUsers();
-        model.addAttribute("Users",usersList);
-        model.addAttribute("currentUser",userService.getUserData());
+        model.addAttribute("Users", usersList);
+        model.addAttribute("currentUser", userService.getUserData());
         return "user_change";
     }
+
     @GetMapping(value = "users/{id}")
     @PreAuthorize("hasAuthority('ROLE_MODERATOR')")
-    public String editUser (Model model, @PathVariable(name = "id")Long id){
+    public String editUser(Model model, @PathVariable(name = "id") Long id) {
         Users users = userService.getUser(id);
-        model.addAttribute("user",users);
-        model.addAttribute("currentUser",userService.getUserData());
+        model.addAttribute("user", users);
+        model.addAttribute("currentUser", userService.getUserData());
         model.addAttribute("roleList", roleService.getAllRoles());
         return "editUser";
     }
+
     @PostMapping(value = "/editUser")
     @PreAuthorize("hasAuthority('ROLE_MODERATOR')")
-    public String editUser(@RequestParam(name = "user_fullName")String fullName,
-                           @RequestParam(name = "user_email")String email,
-                           @RequestParam(name = "user_id")Long id){
+    public String editUser(@RequestParam(name = "user_fullName") String fullName,
+                           @RequestParam(name = "user_email") String email,
+                           @RequestParam(name = "user_id") Long id,
+                           @RequestParam(name = "user_password") String password,
+                           @RequestParam(name = "re_password") String rePassword,
+                           @RequestParam(name = "user_address")String address) {
         Users users = userService.getUser(id);
-        users.setEmail(email);
-        users.setFullName(fullName);
-        userService.saveUser(users);
-        return "redirect:/users";
+        if (password.equals(rePassword)) {
+            users.setPassword(password);
+            users.setEmail(email);
+            users.setFullName(fullName);
+            users.setAddress(address);
+            userService.saveUser(users);
+            return "redirect:/profile";
+        }
+        return "redirect:/profile?error";
     }
-    @PostMapping(value = "/users/delete")
-    @PreAuthorize("hasAuthority('ROLE_MODERATOR')")
-    public String deleteUser (@RequestParam(name = "user_id")Long id){
-        userService.deleteUser(id);
-        return "redirect:/users";
+        @PostMapping(value = "/users/delete")
+        @PreAuthorize("hasAuthority('ROLE_MODERATOR')")
+        public String deleteUser (@RequestParam(name = "user_id") Long id){
+            userService.deleteUser(id);
+            return "redirect:/users";
+        }
     }
-}

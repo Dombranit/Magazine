@@ -1,0 +1,38 @@
+<html html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/navbar">
+<body>
+<div layout:fragment="site_content">
+    <div>
+        <form th:action="@{'/order'}" method="post">
+            <h2 th:text="'Order of '+${order.getUser().fullName}"></h2>
+            <input  name="order_id" type="hidden" th:value="${order.id}">
+            <span th:text="'Address: '+${order.getAddress()}"></span>
+            <span th:text="'Created: '+${order.getCreated()}"></span>
+            <select  name="order_status" class="form-select form-select-sm" aria-label=".form-select-sm example"
+                    th:selected="${order.getOrderStatus()}">
+                <option selected>Set Order Status</option>
+                <option th:value="${orderStatusA}">APPROVED</option>
+                <option th:value="${orderStatusClose}">CLOSED</option>
+                <option th:value="${orderStatusC}">CANCELED</option>
+                <option th:value="${orderStatusPaid}">PAID</option>
+                <option th:value="${orderStatusN}">NEW</option>
+            </select>
+            <button type="submit" class="btn btn-success">Save</button>
+        </form>
+    </div>
+    <div class="row row-cols-3 g-2 mt-5">
+        <div class="card" style="width: 18rem;" th:each="orderrr:${order.getOrderDetails()}">
+            <img th:src="@{'/getImage/'+${orderrr.getProduct().getProductImage()}}" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${orderrr.getPrice()+' Tenge'}"></h5>
+                <p class="card-text" th:text="${orderrr.getAmount()}"></p>
+                <p class="card-text" th:text="${orderrr.getProduct().getTitle()}"></p>
+                <p class="card-text" th:text="${orderrr.getProduct().getCategories()}"></p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
