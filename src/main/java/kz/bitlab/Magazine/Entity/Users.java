@@ -20,7 +20,6 @@ public class Users extends BaseEntity {
     private String address;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne
     private Korzina korzina;
-
 }

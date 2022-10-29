@@ -8,11 +8,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 
 @Entity
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
-
-public class Category extends BaseEntity {
-    private String name;
+public class ProductCountry extends BaseEntity{
+    private String countryName;
 }

@@ -1,7 +1,6 @@
 package kz.bitlab.Magazine.Controller;
 
 import kz.bitlab.Magazine.Entity.Category;
-import kz.bitlab.Magazine.Entity.Product;
 import kz.bitlab.Magazine.service.CategoryService;
 import kz.bitlab.Magazine.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,23 +32,6 @@ public class CategoryController {
         Category category = new Category();
         category.setName(name);
         categoryService.addCategory(category);
-        return "redirect:/category";
-    }
-    @GetMapping(value = "/edit/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_MODERATOR')")
-    public String openEditCategory (Model model, @PathVariable(name = "id")Long id) {
-        Category category = categoryService.getCategory(id);
-        model.addAttribute("category",category);
-        model.addAttribute("currentUser",userService.getUserData());
-        return "editCategory";
-    }
-    @PostMapping(value = "/edit")
-    @PreAuthorize("hasAnyRole('ROLE_MODERATOR')")
-    public String editCategory (@RequestParam(name = "category_name")String name,
-                                @RequestParam(name = "category_id")Long id) {
-        Category category = categoryService.getCategory(id);
-        category.setName(name);
-        categoryService.saveCategory(category);
         return "redirect:/category";
     }
     @PostMapping (value = "/delete")

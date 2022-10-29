@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static liquibase.repackaged.net.sf.jsqlparser.util.validation.metadata.NamedObject.user;
 
 @Service
 public class UserServiceImpl implements UserService {

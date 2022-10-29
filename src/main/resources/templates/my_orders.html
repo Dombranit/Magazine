@@ -4,7 +4,6 @@
       layout:decorate="layout/navbar" xmlns="http://www.w3.org/1999/html">
 <body>
 <div layout:fragment="site_content">
-<body>
 <div class="container task">
     <h2>My order</h2>
     <div class="row mt-5">
@@ -23,7 +22,7 @@
                 <tbody>
                 <tr th:each="ooor:${orders}">
                     <td th:text="${ooor.user.email}"></td>
-                    <td style="speak-date: mdy" th:text="${ooor.getCreated().getDate()}"></td>
+                    <td style="speak-date: mdy" th:text="${ooor.getCreated().getTime()}"></td>
                     <td th:text="${ooor.getOrderStatus().name()}" th:if="${ooor.getOrderStatus().equals(ooor.getOrderStatus().NEW)}" style="color: blue"></td>
                     <td th:text="${ooor.getOrderStatus().name()}" th:if="${ooor.getOrderStatus().equals(ooor.getOrderStatus().APPROVED)}" style="color: green"></td>
                     <td th:text="${ooor.getOrderStatus().name()}" th:if="${ooor.getOrderStatus().equals(ooor.getOrderStatus().CANCELED)}" style="color: red"></td>
@@ -47,7 +46,6 @@
         </div>
     </div>
 </div>
-</body>
 </div>
 </body>
 </html>

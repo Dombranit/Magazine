@@ -15,7 +15,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Korzina extends BaseEntity{
+
+public class Korzina extends BaseEntity {
     @OneToOne
     private Users user;
     @ManyToMany(fetch = FetchType.LAZY)

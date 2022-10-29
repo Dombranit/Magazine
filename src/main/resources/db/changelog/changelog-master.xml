@@ -55,4 +55,14 @@
                 splitStatements="true"
                 stripComments="true"/>
     </changeSet>
+    <changeSet id="2022_10_29_0.0.1_add_countries" author="Zhasulan">
+        <sqlFile
+                dbms="postgresql"
+                encoding="utf8"
+                endDelimiter=";"
+                path="changes/2022_10_29_0.0.1_add_countries.sql"
+                relativeToChangelogFile="true"
+                splitStatements="true"
+                stripComments="true"/>
+    </changeSet>
 </databaseChangeLog>

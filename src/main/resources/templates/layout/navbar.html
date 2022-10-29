@@ -1,10 +1,10 @@
 <html
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/html">
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <meta name ="viewport"
+    <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- CSS only -->
@@ -14,68 +14,91 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
             crossorigin="anonymous"></script>
-    <script src="/js/main.js"></script>
-    <title>Shop</title>
+    <script src="/js/category.js"></script>
+    <title>Techo World</title>
 </head>
 <body>
 <header>
-    <div>
-        <nav class="navbar bg-success p-2 text-dark bg-opacity-75">
-            <div class="container-fluid">
-                <a class="navbar-brand text-white" th:href="@{'/product'}">Shop</a>
-                <ul class="nav ms-auto">
-                    <li sec:authorize="isAnonymous()" class="nav-item mx-auto">
-                        <a th:href="@{'/login'}" class="nav-link text-white">Login</a>
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{'/product'}">Techo World</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
+                    aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{'/login'}" sec:authorize="isAnonymous()"
+                           th:text="#{label.login}"></a>
                     </li>
-                    <li sec:authorize="isAuthenticated()" class="nav-item">
-                        <a th:href="@{'/profile'}" class="nav-link text-dark fw-bold"
-                           th:text="${currentUser.fullName}"></a>
+                    <!--                    profile-->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false" th:text="${currentUser.fullName}" sec:authorize="isAuthenticated()">
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" sec:authorize="isAuthenticated()" th:href="@{'/order/myOrder'}"
+                                   th:text="#{label.myOrder}"></a></li>
+                            <li><a class="dropdown-item" th:href="@{'/profile'}" th:text="#{label.profile}"></a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" sec:authorize="isAuthenticated()" href="JavaScript:void(0)"
+                                   onclick="document.getElementById('logoutFormId').submit()"
+                                   th:text="#{label.logout}"></a></li>
+                            <form th:action="@{'/logout'}" method="post" id="logoutFormId"
+                                  sec:authorize="isAuthenticated()"></form>
+                        </ul>
                     </li>
-                    <li sec:authorize="isAuthenticated()" class="nav-item">
-                        <a class="nav-link text-white" href="JavaScript:void(0)"
-                           onclick="document.getElementById('logoutFormId').submit()">Logout</a>
+                    <!--                    moderator menu-->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false" th:text="#{label.adminMenu}"
+                           sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')">
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" th:href="@{'/product/admin'}" th:text="#{label.products}"></a>
+                            </li>
+                            <li><a class="dropdown-item" th:href="@{'/category'}" th:text="#{label.categories}"></a>
+                            </li>
+                            <li><a class="dropdown-item" th:href="@{'/users'}" th:text="#{label.users}"></a></li>
+                            <li><a class="dropdown-item" th:href="@{'/order'}" th:text="#{label.orders}"></a></li>
+                            <li><a class="dropdown-item" th:href="@{'/country'}" th:text="#{label.countries}"></a></li>
+                        </ul>
                     </li>
-                    <li >
-                        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{'/korzina'}">Korzina</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false" th:text="#{label.language}">
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="?lng=ru">RUS</a></li>
+                            <li><a class="dropdown-item" href="?lng=en">ENG</a></li>
+                        </ul>
+                    </li>
+                    <!--                    korzina-->
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{'/korzina'}" th:text="#{label.korzina}">
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false" th:text="#{label.categories}">
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li th:each="cat:${categories}"><a th:href="@{'/product/sorted/'+${cat.id}}">
+                                <button th:text="${cat.name}" th:value="${cat.id}" class="btn btn-primary"></button>
+                            </a></li>
+                        </ul>
                     </li>
                 </ul>
-                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
-                     aria-labelledby="offcanvasNavbarLabel">
-                    <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Shop</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                    </div>
-                    <div class="offcanvas-body">
-                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" th:href="@{'/product'}">Products</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" sec:authorize="isAuthenticated()" th:href="@{'/order/myOrder'}">My Order</a>
-                            </li>
-                            <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')" class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                   aria-expanded="false">
-                                    Moderator Menu
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" th:href="@{'/product/admin'}">Products</a></li>
-                                    <li><a class="dropdown-item" th:href="@{'/category'}">Categories</a></li>
-                                    <li><a class="dropdown-item" th:href="@{'/users'}">Users</a></li>
-                                    <li><a class="dropdown-item" th:href="@{'/order'}">Orders</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <form th:action="@{'/logout'}" method="post" id="logoutFormId" sec:authorize="isAuthenticated()"></form>
+                <form class="d-flex" role="search">
+                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
             </div>
-        </nav>
-    </div>
+        </div>
+    </nav>
 </header>
 <div class="container">
     <div layout:fragment="site_content">

@@ -1,4 +1,4 @@
-<html html xmlns:th="http://www.thymeleaf.org"
+<html  xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="layout/navbar" xmlns="http://www.w3.org/1999/html">
@@ -36,6 +36,10 @@
                 <select name="product_cat">
                     <option th:each="cat:${categories}" th:value="${cat.id}"
                             th:text="${cat.name}"></option>
+                </select>
+                <select name="product_country">
+                    <option th:each="country:${countries}" th:value="${country.id}"
+                            th:text="${country.countryName}"></option>
                 </select>
                 <button type="submit" class="btn btn-success">Save</button>
             </form>

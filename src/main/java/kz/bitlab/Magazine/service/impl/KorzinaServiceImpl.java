@@ -8,13 +8,12 @@ import kz.bitlab.Magazine.repository.ProductRepository;
 import kz.bitlab.Magazine.service.KorzinaService;
 import kz.bitlab.Magazine.service.OrderService;
 import kz.bitlab.Magazine.service.UserService;
-import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collector;
+
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +26,9 @@ public class KorzinaServiceImpl implements KorzinaService {
     private UserService userService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private HttpSession session;
+
     @Override
     public Korzina createKorzina(Users users, Long id) {
         Korzina korzina = new Korzina();
@@ -97,7 +99,7 @@ public class KorzinaServiceImpl implements KorzinaService {
                 .collect(Collectors.groupingBy(product -> product, Collectors.counting()));
 
         List<OrderDetails> orderDetails = productWithAmount.entrySet().stream()
-                .map(pair -> new OrderDetails(orders,pair.getKey(),pair.getValue()))
+                .map(pair -> new OrderDetails(orders, pair.getKey(), pair.getValue()))
                 .collect(Collectors.toList());
 
         BigDecimal total = new BigDecimal(orderDetails.stream()
@@ -113,4 +115,61 @@ public class KorzinaServiceImpl implements KorzinaService {
         korzinaRepository.save(korzina);
 
     }
+
+    @Override
+    public KorzinaDto getKorzinaByAnonym() {
+        List<Product> products = (List<Product>) session.getAttribute("orderProductList");
+        if (products == null) {
+            return new KorzinaDto();
+        }
+        KorzinaDto korzinaDto = new KorzinaDto();
+        Map<Long, KorzinaDetailsDto> mapByProductId = new HashMap<>();
+        for (Product product : products) {
+            KorzinaDetailsDto detail = mapByProductId.get(product.getId());
+            if (detail == null) {
+                mapByProductId.put(product.getId(), new KorzinaDetailsDto(product));
+            } else {
+                detail.setAmount(detail.getAmount().add(new BigDecimal("1.0")));
+                detail.setSum(detail.getSum() + Double.parseDouble(product.getPrice().toString()));
+            }
+        }
+        korzinaDto.setKorzinaDetails(new ArrayList<>(mapByProductId.values()));
+        korzinaDto.aggregate();
+
+        return korzinaDto;
+    }
+
+    @Override
+    public void commitAnonymKorzinaToOrder(String email) {
+        List<Product> products = (List<Product>) session.getAttribute("orderProductList");
+        Korzina korzina = new Korzina();
+        korzina.setProducts(products);
+        session.setAttribute("korzina", korzina);
+        Users users = userService.getUserByEmail(email);
+        korzina.setUser(users);
+        Orders orders = new Orders();
+        orders.setOrderStatus(OrderStatus.NEW);
+        orders.setUser(users);
+
+        Map<Product, Long> productWithAmount = korzina.getProducts().stream()
+                .collect(Collectors.groupingBy(product -> product, Collectors.counting()));
+
+        List<OrderDetails> orderDetails = productWithAmount.entrySet().stream()
+                .map(pair -> new OrderDetails(orders, pair.getKey(), pair.getValue()))
+                .collect(Collectors.toList());
+
+        BigDecimal total = new BigDecimal(orderDetails.stream()
+                .map(detail -> detail.getPrice().multiply(detail.getAmount()))
+                .mapToDouble(BigDecimal::doubleValue).sum());
+
+        orders.setOrderDetails(orderDetails);
+        orders.setTotalPrice(total);
+        orders.setAddress(users.getAddress());
+
+        orderService.saveOrder(orders);
+        korzina.getProducts().clear();
+        korzinaRepository.save(korzina);
+
+    }
+
 }

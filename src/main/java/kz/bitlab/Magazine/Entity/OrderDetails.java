@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class OrderDetails extends BaseEntity {
     @ManyToOne
     private Orders orders;
@@ -19,11 +20,11 @@ public class OrderDetails extends BaseEntity {
     @ManyToOne
     private Product product;
 
-    public OrderDetails (Orders orders, Product product ,Long amount){
+    public OrderDetails(Orders orders, Product product, Long amount) {
         this.orders = orders;
-        this.amount=new BigDecimal(amount);
-        this.product=product;
-        this.price=new BigDecimal(String.valueOf(product.getPrice()));
+        this.amount = new BigDecimal(amount);
+        this.product = product;
+        this.price = new BigDecimal(String.valueOf(product.getPrice()));
     }
 
 }

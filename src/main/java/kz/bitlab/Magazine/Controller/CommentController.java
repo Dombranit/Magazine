@@ -1,8 +1,6 @@
 package kz.bitlab.Magazine.Controller;
 
 import kz.bitlab.Magazine.Entity.Comments;
-import kz.bitlab.Magazine.Entity.Product;
-import kz.bitlab.Magazine.Entity.Users;
 import kz.bitlab.Magazine.service.CommentService;
 import kz.bitlab.Magazine.service.ProductService;
 import kz.bitlab.Magazine.service.UserService;
@@ -17,10 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping(value = "/comment")
 public class CommentController {
     @Autowired
-    private UserService userService;
-    @Autowired
-    private ProductService productService;
-    @Autowired
     private CommentService commentService;
 
     @PostMapping("/add")
@@ -33,8 +27,9 @@ public class CommentController {
         return "redirect:/product/"+productId;
     }
     @PostMapping(value = "/delete")
-    public String deleteComment(@RequestParam(name = "comment_id") Long id){
+    public String deleteComment(@RequestParam(name = "comment_id") Long id,
+                                @RequestParam(name = "product_id")Long productId){
         commentService.deleteComment(id);
-        return "redirect:/product";
+        return "redirect:/product"+productId;
     }
 }

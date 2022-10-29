@@ -1,6 +1,9 @@
 package kz.bitlab.Magazine.Controller;
 
+import kz.bitlab.Magazine.Entity.Category;
+import kz.bitlab.Magazine.service.CategoryService;
 import kz.bitlab.Magazine.service.FileUpload.FileUploadService;
+import kz.bitlab.Magazine.service.KorzinaService;
 import kz.bitlab.Magazine.service.ProductService;
 import kz.bitlab.Magazine.service.UserService;
 import org.apache.commons.io.IOUtils;
@@ -16,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 @Controller
 public class HomeController {
@@ -25,12 +29,15 @@ public class HomeController {
     private ProductService productService;
     @Autowired
     private FileUploadService fileUploadService;
-
+    @Autowired
+    private CategoryService categoryService;
     @Value("${loadURL}")
     private String loadURL;
     @GetMapping(value = "/navbar")
     public String HomePage(Model model) {
         model.addAttribute("currentUser", userService.getUserData());
+        List<Category> categoryList = categoryService.getCategories();
+        model.addAttribute("categories", categoryList);
         return "layout/navbar";
     }
 

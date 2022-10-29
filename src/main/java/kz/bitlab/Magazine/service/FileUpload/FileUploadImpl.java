@@ -1,4 +1,4 @@
-package kz.bitlab.Magazine.service.impl;
+package kz.bitlab.Magazine.service.FileUpload;
 
 import kz.bitlab.Magazine.Entity.Product;
 import kz.bitlab.Magazine.Entity.Users;

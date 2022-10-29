@@ -4,8 +4,6 @@ import kz.bitlab.Magazine.Entity.Category;
 import kz.bitlab.Magazine.Entity.Korzina;
 import kz.bitlab.Magazine.Entity.Product;
 import kz.bitlab.Magazine.Entity.Users;
-import kz.bitlab.Magazine.dto.KorzinaDetailsDto;
-import kz.bitlab.Magazine.dto.KorzinaDto;
 import kz.bitlab.Magazine.dto.ProductDto;
 import kz.bitlab.Magazine.mapper.ProductMapper;
 import kz.bitlab.Magazine.repository.ProductRepository;
@@ -16,11 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
-import java.net.http.HttpRequest;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -32,6 +30,9 @@ public class ProductServiceImpl implements ProductService {
     private UserService userService;
     @Autowired
     private KorzinaService korzinaService;
+    @Autowired
+    private HttpSession session;
+
     @Override
     public void removeProductFromKorzina(Long productdId, String email) {
         Users users = userService.getUserByEmail(email);
@@ -61,7 +62,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void addToKorzina(Long productId) {}
+    public void addToKorzinabyAnonym(Long productId) {
+        List<Product> orderProductList = (List<Product>) session.getAttribute("orderProductList");
+        Product product = productRepository.getReferenceById(productId);
+        if (orderProductList == null) {
+            List<Product> newOrderProductList = new ArrayList<>();
+            newOrderProductList.add(product);
+            session.setAttribute("orderProductList", newOrderProductList);
+        } else {
+            orderProductList.add(product);
+            session.setAttribute("orderProductList", orderProductList);
+        }
+    }
 
     @Override
     public List<ProductDto> getProducts() {

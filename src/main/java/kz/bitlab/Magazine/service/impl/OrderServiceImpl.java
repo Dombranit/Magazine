@@ -1,7 +1,6 @@
 package kz.bitlab.Magazine.service.impl;
 
 
-import kz.bitlab.Magazine.Entity.OrderStatus;
 import kz.bitlab.Magazine.Entity.Orders;
 import kz.bitlab.Magazine.Entity.Users;
 import kz.bitlab.Magazine.repository.OrderRepository;
@@ -15,6 +14,7 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
+
     @Override
     public List<Orders> getOrders() {
         return orderRepository.findAll();

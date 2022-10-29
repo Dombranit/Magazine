@@ -5,23 +5,55 @@
 <body>
 <div layout:fragment="site_content">
     <h2>Korzina</h2>
-    <h3>All sum -><b th:text="${korzina.sum}+' Tenge'"></b></h3>
-    <form th:action="@{'/korzina'}" method="post" sec:authorize="isAuthenticated()">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col" th:each="detail:${korzina.korzinaDetails}" sec:authorize="isAuthenticated()">
+                <div class="card" style="width: 18rem;">
+                    <img width="250" height="350" th:src="@{'/getImage/'+${detail.getImage()}}" class="card-img-top"
+                         alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${detail.title}"></h5>
+                        <h4 class="card-text" th:text="${detail.price}+' Tenge'"></h4>
+                        <h4 class="card-text" th:text="${detail.sum}+' Tenge'"></h4>
+                        <a th:href="@{'/korzina/add/'+${detail.getProductId()}}" class="btn btn-success"
+                           sec:authorize="isAuthenticated()">+
+                        </a>
+                        <input class="card-text" th:value="${detail.amount}" type="text" readonly>
+                        <a th:href="@{'/korzina/remove/'+${detail.productId}}" class="btn btn-danger">-</a>
+                    </div>
+                </div>
+            </div>
+            <h3>Total Price<b th:text="${korzina.sum}+' Tenge'"></b></h3>
+            <form th:action="@{'/korzina'}" method="post" sec:authorize="isAuthenticated()">
+                <button type="submit" class="btn btn-success">
+                    Create Order
+                </button>
+            </form>
+            <div class="col" th:each="detail:${korzina.korzinaDetails}" sec:authorize="isAnonymous()">
+                <div class="card" style="width: 18rem;">
+                    <img width="250" height="350" th:src="@{'/getImage/'+${detail.getImage()}}" class="card-img-top"
+                         alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${detail.title}"></h5>
+                        <h4 class="card-text" th:text="${detail.price}+' Tenge'"></h4>
+                        <h4 class="card-text" th:text="${detail.sum}+' Tenge'"></h4>
+                        <a th:href="@{'/korzina/add/'+${detail.getProductId()}}" class="btn btn-success"
+                           sec:authorize="isAuthenticated()">+
+                        </a>
+                        <input class="card-text" th:value="${detail.amount}" type="text" readonly>
+                        <a th:href="@{'/korzina/remove/'+${detail.productId}}" class="btn btn-danger">-</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="aa" sec:authorize="isAnonymous()">
+    <h3>Total Price<b th:text="${korzina.sum}+' Tenge'"></b></h3>
+    <form th:action="@{'/korzina'}" method="post" sec:authorize="isAnonymous()">
         <button type="submit" class="btn btn-success">
             Create Order
         </button>
     </form>
-    <div class="row row-cols-3 g-2 mt-5">
-        <div class="card" style="width: 18rem;" th:each="detail:${korzina.korzinaDetails}">
-            <img width="250" height="350" th:src="@{'/getImage/'+${detail.getImage()}}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title" th:text="${detail.title}"></h5>
-                <p class="card-text" th:text="${detail.price}+' Tenge'"></p>
-                <p class="card-text" th:text="${detail.amount}"></p>
-                <p class="card-text" th:text="${detail.sum}+' Tenge'"></p>
-                <a th:href="@{'/korzina/remove/'+${detail.productId}}" class="btn btn-danger">Remove</a>
-            </div>
-        </div>
     </div>
 </div>
 </body>

@@ -1,11 +1,13 @@
 package kz.bitlab.Magazine.Controller;
 
+import kz.bitlab.Magazine.Entity.Role;
 import kz.bitlab.Magazine.Entity.Users;
 import kz.bitlab.Magazine.dto.UserDto;
 import kz.bitlab.Magazine.service.RoleService;
 import kz.bitlab.Magazine.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +20,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private RoleService roleService;
-
-    @GetMapping(value = "/403")
-    public String get403() {
-        return "403";
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping(value = "/login")
     public String login(Model model) {
@@ -77,7 +76,9 @@ public class UserController {
         Users users = userService.getUser(id);
         model.addAttribute("user", users);
         model.addAttribute("currentUser", userService.getUserData());
-        model.addAttribute("roleList", roleService.getAllRoles());
+        List<Role> roleList = roleService.getAllRoles();
+        roleList.removeAll(users.getRoles());
+        model.addAttribute("roleList",roleList);
         return "editUser";
     }
 
@@ -86,17 +87,20 @@ public class UserController {
     public String editUser(@RequestParam(name = "user_fullName") String fullName,
                            @RequestParam(name = "user_email") String email,
                            @RequestParam(name = "user_id") Long id,
+                           @RequestParam(name = "user_current_password") String currentPassword,
                            @RequestParam(name = "user_password") String password,
                            @RequestParam(name = "re_password") String rePassword,
                            @RequestParam(name = "user_address")String address) {
         Users users = userService.getUser(id);
-        if (password.equals(rePassword)) {
-            users.setPassword(password);
-            users.setEmail(email);
-            users.setFullName(fullName);
-            users.setAddress(address);
-            userService.saveUser(users);
-            return "redirect:/profile";
+        if (users.getPassword().equals(passwordEncoder.encode(currentPassword))) {
+            if (password.equals(rePassword)) {
+                users.setPassword(password);
+                users.setEmail(email);
+                users.setFullName(fullName);
+                users.setAddress(address);
+                userService.saveUser(users);
+                return "redirect:/profile";
+            }
         }
         return "redirect:/profile?error";
     }
