@@ -1,0 +1,90 @@
+<!doctype html>
+<html class="no-js" lang="zxx"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="Blackwood/layout">
+<body>
+<main layout:fragment="content">
+    <!-- page__title-start -->
+    <section class="page__title p-relative d-flex align-items-center" data-background="/avatars/back.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="page__title-inner text-center">
+                        <h1>Sign Up</h1>
+                        <div class="page__title-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb justify-content-center">
+                                    <li class="breadcrumb-item active" aria-current="page">Sign Up</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- page__title-end -->
+
+    <!-- signup__area start -->
+    <section class="signup__area po-rel-z1 pt-100 pb-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-xxl-6 offset-xxl-3 col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
+                    <div class="sign__wrapper white-bg">
+                        <div class="sign__header mb-35">
+                        </div>
+                        <div class="sign__form">
+                            <form th:action="@{'/register'}" method="post">
+                                <div class="sign__input-wrapper mb-25">
+                                    <h5>Full Name</h5>
+                                    <div class="sign__input">
+                                        <input type="text" placeholder="Full name" name="user_fullName" required>
+                                        <i class="fal fa-user"></i>
+                                    </div>
+                                </div>
+                                <div class="sign__input-wrapper mb-25">
+                                    <h5>Work email</h5>
+                                    <div class="sign__input">
+                                        <input type="email" placeholder="e-mail address" name="user_email" required>
+                                        <i class="fal fa-envelope"></i>
+                                    </div>
+                                </div>
+                                <div class="sign__input-wrapper mb-10">
+                                    <h5>Delivery Address</h5>
+                                    <div class="sign__input">
+                                        <input type="text" placeholder="Delivery Address" name="user_address">
+                                        <i class="fal fa-lock"></i>
+                                    </div>
+                                </div>
+                                <div class="sign__input-wrapper mb-25">
+                                    <h5>Password</h5>
+                                    <div class="sign__input">
+                                        <input type="password" placeholder="Password" name="user_password" required>
+                                        <i class="fal fa-lock"></i>
+                                    </div>
+                                </div>
+                                <div class="sign__input-wrapper mb-10">
+                                    <h5>Re-Password</h5>
+                                    <div class="sign__input">
+                                        <input type="password" placeholder="Re-Password" name="re_user_password">
+                                        <i class="fal fa-lock"></i>
+                                    </div>
+                                </div>
+                                <button class="btn-tp w-100"> <span></span> Sign Up</button>
+                                <div class="sign__new text-center mt-20">
+                                    <p>Already in Markit ? <a th:href="@{'/login'}"> Sign In</a></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- signup__area end -->
+
+</main>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html class="no-js" lang="zxx"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="Blackwood/layout">
+  <body>
+  <main layout:fragment="content">
+      <!-- page__title-start -->
+      <section class="page__title p-relative d-flex align-items-center" data-background="/avatars/back.jpg">
+          <div class="container">
+              <div class="row">
+                  <div class="col-xl-12">
+                      <div class="page__title-inner text-center">
+                          <h1>Contact Us</h1>
+                          <div class="page__title-breadcrumb">
+                              <nav aria-label="breadcrumb">
+                                  <ol class="breadcrumb justify-content-center">
+                                      <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                      <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                                  </ol>
+                              </nav>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <!-- page__title-end -->
+
+      <!-- contact-area start -->
+      <section class="contact-area pt-120 pb-50 fix">
+          <div class="container">
+              <div class="row">
+                  <div class="col-xxl-5 col-xl-6 col-lg-6">
+                      <div class="sec-wrapper">
+                        <p><img th:src="@{'/getAvatar/'+${currentUser.avatar}}" width="240" height="280"></p>
+                      </div>
+                      <div class="contact-info mr-50 mr-xs-0  mr-md-0 mb-30">
+                          <div class="single-contact-info d-flex align-items-center">
+                              <div class="contact-info-icon">
+                                  <a href="#"><i class="fal fa-map-marker-alt"></i></a>
+                              </div>
+                              <div class="contact-info-text mt-10">
+                                  <span>Delivery Address</span>
+                                  <h5><a target="_blank"  th:text="${currentUser.address}"></a></h5>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-xxl-7 col-xl-6 col-lg-6">
+                      <form id="contacts-form" class="conatct-post-form mb-30" action="#">
+                          <div class="row">
+                              <div class="col-xl-6 col-lg-6 col-md-6">
+                                  <div class="contact-icon p-relative contacts-name">
+                                      <label>Name</label>
+                                      <input type="text" th:value="${currentUser.getFullName()}" readonly>
+                                  </div>
+                              </div>
+                              <div class="col-xl-6 col-lg-6 col-md-6">
+                                  <div class="contact-icon p-relative contacts-name">
+                                      <label>Email</label>
+                                      <input type="email" th:value="${currentUser.getEmail()}" readonly>
+                                  </div>
+                              </div>
+                              <div class="col-xl-12">
+                                  <div class="contact- mt-15">
+                                      <button class="btn-tp mt-15" type="submit">Edit Profile</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <!-- contact-area end -->
+  </main>
+  </body>
+</html>

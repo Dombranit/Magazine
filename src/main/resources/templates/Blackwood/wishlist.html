@@ -1,0 +1,71 @@
+<!doctype html>
+<html class="no-js" lang="zxx"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="Blackwood/layout">
+<body>
+<main layout:fragment="content">
+       <!-- page__title-start -->
+       <section class="page__title p-relative d-flex align-items-center" data-background="/avatars/back.jpg">
+           <div class="container">
+               <div class="row">
+                   <div class="col-xl-12">
+                       <div class="page__title-inner text-center">
+                           <h1>Your Wishlist</h1>
+                           <div class="page__title-breadcrumb">
+                               <nav aria-label="breadcrumb">
+                                   <ol class="breadcrumb justify-content-center">
+                                       <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                       <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
+                                   </ol>
+                               </nav>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </section>
+       <!-- page__title-end -->
+
+       <!-- cart-area start -->
+       <section class="cart-area pb-120 pt-120">
+           <div class="container">
+               <div class="row">
+                   <div class="col-12">
+                       <form action="#">
+                           <div class="table-content table-responsive">
+                               <table class="table">
+                                   <thead>
+                                   <tr>
+                                       <th class="product-thumbnail">Images</th>
+                                       <th class="cart-product-name">Product</th>
+                                       <th class="product-price">Unit Price</th>
+                                       <th class="product-price">Country</th>
+                                       <th class="product-quantity"></th>
+                                       <th class="product-remove">Remove</th>
+                                   </tr>
+                                   </thead>
+                                   <tbody>
+                                   <tr th:each="prod:${wishlist.getProducts()}">
+                                       <td class="product-thumbnail"><a th:href="@{'/product/'+${prod.getId()}}"><img th:src="@{'/getImage/'+${prod.getProductImage()}}" alt=""></a></td>
+                                       <td class="product-name" th:text="${prod.getTitle()}"></td>
+                                       <td class="product-price"><span class="amount" th:text="${prod.getPrice()}"></span></td>
+                                       <td class="product-price"><span class="amount" th:text="${prod.getCountry().getCountryName()}"></span></td>
+                                       <td class="product-quantity">
+                                           <a  class="btn-tp"  th:href="@{'/korzina/add/'+${prod.getId()}}">Add To Cart</a>
+                                       </td>
+                                       <td class="product-remove"><a th:href="@{'/wishlist/remove/'+${prod.getId()}}"><i class="fa fa-times"></i></a></td>
+                                   </tr></tbody>
+                               </table>
+                           </div>
+                       </form>
+                   </div>
+               </div>
+           </div>
+       </section>
+       <!-- cart-area end -->
+
+   </main>
+   </body>
+</html>

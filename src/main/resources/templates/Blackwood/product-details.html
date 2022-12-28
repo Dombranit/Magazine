@@ -1,0 +1,149 @@
+<!doctype html>
+<html class="no-js" lang="zxx"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="Blackwood/layout">
+<body>
+<main layout:fragment="content">
+    <!-- page__title-start -->
+    <section class="page__title p-relative d-flex align-items-center" data-background="/avatars/back.jpg"
+    >
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="page__title-inner text-center">
+                        <h1>Product Details</h1>
+                        <div class="page__title-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb justify-content-center">
+                                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page"
+                                        th:text="#{label.about}"></li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- page__title-end -->
+
+    <!-- product-details-start -->
+    <section class="product-details pt-90 pb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6">
+                    <div class="product__modal-box d-flex">
+                        <div class="tab-content mb-20" id="product-detailsContent">
+                            <div class="tab-pane fade active show" id="pro-one" role="tabpanel"
+                                 aria-labelledby="pro-one-tab">
+                                <div class="product__modal-img product__thumb w-img">
+                                    <img th:src="@{'/getImage/'+${product.getProductImage()}}" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6">
+                    <div class="product__modal-content-2">
+                        <h4 th:text="${product.getTitle()}"></h4>
+                        <div class="product__price mb-25">
+                            <span th:text="${product.getPrice()}+' T'"></span>
+                        </div>
+                        <div class="product__modal-des mb-30">
+                            <p th:text="${product.getCountry().countryName}"></p>
+                        </div>
+                        <div class="pro-quan-area d-sm-flex align-items-center">
+                            <div class="pro-cart-btn">
+                                <a th:href="@{'/korzina/noUserKorzina/'+${product.id}}" class="add-cart-btn mb-20">+ Add
+                                    to Cart</a>
+                            </div>
+                        </div>
+                        <div class="product__tag mb-25">
+                            <span class="ct mr-20" th:text="#{label.categories}"></span>
+                            <span th:each="cat:${product.getCategories()}"><a th:text="' '+${cat.getName()}"
+                                                                 th:href="@{'/sorted/'+${cat.id}}"></a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-70">
+                <div class="col-xl-12">
+                    <div class="product__details-tab">
+                        <div class="product__details-tab-nav text-center mb-45">
+                            <nav>
+                                <div class="nav nav-tabs justify-content-start justify-content-sm-center"
+                                     id="pro-details" role="tablist">
+                                    <a class="nav-item nav-link" id="review-tab" data-bs-toggle="tab" href="#review"
+                                       role="tab" aria-controls="review" aria-selected="true" th:text="#{label.review}"></a>
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="tab-content" id="pro-detailsContent">
+                            <div class="tab-pane fade active show" id="review" role="tabpanel">
+                                <div class="product__details-review mb-35">
+                                    <div class="postbox__comments">
+                                        <div class="postbox__comment-title mb-30">
+                                            <h3 th:text="#{label.review}"></h3>
+                                        </div>
+                                        <div class="latest-comments mb-30">
+                                            <ul th:each="coment:${comments}"
+                                                th:if="${product.id==coment.product.id}">
+                                                <li>
+                                                    <div class="comments-box">
+                                                        <div class="comments-text">
+                                                            <div class="avatar-name">
+                                                                <h5 th:text="${coment.users.fullName}"></h5>
+                                                                <span th:text="${coment.getUsers().getEmail()}"></span>
+                                                            </div>
+                                                            <p th:text="${coment.getComment()}"></p>
+                                                        </div>
+                                                        <form th:action="@{'/comment/delete'}" method="post">
+                                                            <input type="hidden" th:value="${product.getId()}" name="product_id">
+                                                            <div class="col-xl-12">
+                                                                <button class="add-cart-btn" type="submit"
+                                                                        sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MODERATOR')"
+                                                                        th:value="${coment.id}"
+                                                                        name="comment_id">Delete Comment
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="post-comments-form">
+                                        <div class="post-comments-title mb-30">
+                                            <h3>Your Review</h3>
+                                        </div>
+                                        <form id="contacts-form" class="conatct-post-form"
+                                              th:action="@{'/comment/add'}" method="post">
+                                            <div class="row">
+                                                <div class="col-xl-12">
+                                                    <input type="hidden" th:value="${product.getId()}" name="product_id">
+                                                    <div class="contact-icon p-relative contacts-message">
+                                                        <textarea name="comment_title" cols="30" rows="10"
+                                                                  placeholder="Comments"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12">
+                                                    <button class="add-cart-btn" type="submit">Post comment</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- product-details-end -->
+</main>
+</body>
+</html>

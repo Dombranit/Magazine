@@ -1,0 +1,92 @@
+<!doctype html>
+<html class="no-js" lang="zxx"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="Blackwood/layout">
+
+<body>
+<main layout:fragment="content">
+    <!-- page__title-start -->
+    <section class="page__title p-relative d-flex align-items-center" data-background="/avatars/back.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="page__title-inner text-center">
+                        <h1 th:text="#{label.korzina}"></h1>
+                        <div class="page__title-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb justify-content-center">
+                                    <li class="breadcrumb-item"><a th:href="@{'/products'}">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Cart</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- page__title-end -->
+
+    <!-- cart-area start -->
+    <section class="cart-area pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form>
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="product-thumbnail">Images</th>
+                                    <th class="cart-product-name">Product</th>
+                                    <th class="product-price">Unit Price</th>
+                                    <th class="product-quantity">Quantity</th>
+                                    <th class="product-subtotal">Total</th>
+                                    <th class="product-remove">Remove</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="prod:${korzina.korzinaDetails}">
+                                    <td class="product-thumbnail"><a th:href="@{'/product/'+${prod.getProductId()}}"><img
+                                            th:src="@{'/getImage/'+${prod.getImage()}}" alt=""></a></td>
+                                    <td class="product-name"><a th:href="@{'/product/'+${prod.getProductId()}}" th:text="${prod.getTitle()}"></a></td>
+                                    <td class="product-price"><span class="amount" th:text="${prod.getPrice()}+'₸'"></span></td>
+                                    <td class="product-quantity">
+                                        <div class="cart-plus-minus"><input type="text" th:value="${prod.getAmount()}">
+                                            <div class="dec qtybutton">-</div>
+                                            <div class="inc qtybutton">+</div>
+                                            <div class="dec qtybutton">-</div>
+                                            <div class="inc qtybutton">+</div>
+                                        </div>
+                                    </td>
+                                    <td class="product-subtotal"><span class="amount" th:text="${prod.getSum()}"></span></td>
+                                    <td><a th:href="@{'/korzina/remove/'+${prod.productId}}">delete</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        <div class="row justify-content-end">
+                            <div class="col-md-5">
+                                <div class="cart-page-total">
+                                    <h2>Cart totals</h2>
+                                    <ul class="mb-20">
+                                        <li>Total <span th:text="${korzina.getSum()}"></span></li>
+                                     </ul>
+                                    <form th:action="@{'/korzina/a'}" method="post">
+                                        <button class="btn-success" type="submit">Create Order</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- cart-area end -->
+
+</main>
+</body>
+</html>
