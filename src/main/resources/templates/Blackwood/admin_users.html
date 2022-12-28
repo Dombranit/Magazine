@@ -1,0 +1,94 @@
+<!doctype html>
+<html class="no-js" lang="zxx"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="Blackwood/layout">
+<body>
+<main layout:fragment="content">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProduct">
+        Add User
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="addProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addProductLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form th:action="@{'/register'}" method="post">
+                    <div class="modal-body">
+                        <label>Email:</label>
+                        <input type="email" name="user_email" class="form-control" required>
+                        <label>User_FullName:</label>
+                        <input type="text" name="user_fullName" class="form-control" required>
+                        <label>Address</label>
+                        <input type="text" name="user_address" class="form-control" required>
+                        <label>Password:</label>
+                        <input type="password" name="user_password" class="form-control" required>
+                        <label>Retype Password:</label>
+                        <input type="password" name="re_user_password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-success float-right">Add User</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- cart-area start -->
+    <section class="cart-area pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form>
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="product-thumbnail">Id</th>
+                                    <th class="cart-product-name">Email</th>
+                                    <th class="product-price">Full name</th>
+                                    <th class="product-quantity">Role</th>
+                                    <th class="product-subtotal"></th>
+                                    <th class="product-remove"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="user:${Users}">
+                                    <td th:text="${user.id}"></td>
+                                    <td th:text="${user.email}"></td>
+                                    <td th:text="${user.fullName}"></td>
+                                    <td>
+                                        <div th:each="role:${user.roles}" th:text="${role.role}">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{'/users/'+${user.id}}">
+                                            <button type="button" class="btn btn-primary">
+                                                Edit
+                                            </button>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <form th:action="@{'/users/delete'}" method="post">
+                                            <button type="submit" class="btn btn-danger" th:value="${user.id}" name="user_id">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- cart-area end -->
+
+</main>
+</body>
+</html>

@@ -16,10 +16,9 @@
                         <p class="card-text" th:text="${prod.price}+'Tenge'"></p>
                         <p class="card-text" th:text="${prod.country.countryName}"></p>
                         <a th:href="@{'/product/'+${prod.id}}" class="btn btn-primary">About</a>
-                        <a th:href="@{'/korzina/'+${prod.id}}" class="btn btn-success"
-                           sec:authorize="isAuthenticated()">Add to Korzina</a>
-                        <a th:href="@{'/korzina/noUserKorzina/'+${prod.id}}" class="btn btn-success"
-                                                   sec:authorize="isAnonymous()">Add to Korzina</a>
+                        <a th:href="@{'/wishlist/'+${prod.id}}" class="btn btn-success"
+                           sec:authorize="isAuthenticated()">Add to Wishlist</a>
+                        <a th:href="@{'/korzina/noUserKorzina/'+${prod.id}}" class="btn btn-success">Add to Korzina</a>
                     </div>
                 </div>
             </div>

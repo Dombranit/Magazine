@@ -1,7 +1,9 @@
 package kz.bitlab.Magazine.Controller;
 
 import kz.bitlab.Magazine.Entity.Category;
+import kz.bitlab.Magazine.dto.KorzinaDto;
 import kz.bitlab.Magazine.service.CategoryService;
+import kz.bitlab.Magazine.service.KorzinaService;
 import kz.bitlab.Magazine.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +20,8 @@ public class CategoryController {
     private UserService userService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private KorzinaService korzinaService;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MODERATOR')")
@@ -25,7 +29,9 @@ public class CategoryController {
         List<Category> categoryList = categoryService.getCategories();
         model.addAttribute("categories",categoryList);
         model.addAttribute("currentUser",userService.getUserData());
-        return "category_change";
+        KorzinaDto korzinaDto = korzinaService.getKorzinaByAnonym();
+        model.addAttribute("korzina",korzinaDto);
+        return "Blackwood/admin_category";
     }
     @PostMapping(value = "/create")
     public String createCategory(@RequestParam(name = "category_name")String name) {

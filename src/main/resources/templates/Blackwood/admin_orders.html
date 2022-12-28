@@ -1,0 +1,67 @@
+<!doctype html>
+<html class="no-js" lang="zxx"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="Blackwood/layout">
+<body>
+<main layout:fragment="content">
+    <!-- cart-area start -->
+    <section class="cart-area pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form>
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>@Email</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Address</th>
+                                    <th>Price</th>
+                                    <th>Edit</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="ooor:${orders}">
+                                    <td th:text="${ooor.user.email}"></td>
+                                    <td style="speak-date: mdy" th:text="${ooor.getCreated()}"></td>
+                                    <td th:text="${ooor.getOrderStatus().name()}"
+                                        th:if="${ooor.getOrderStatus().equals(ooor.getOrderStatus().NEW)}" style="color: blue"></td>
+                                    <td th:text="${ooor.getOrderStatus().name()}"
+                                        th:if="${ooor.getOrderStatus().equals(ooor.getOrderStatus().APPROVED)}"
+                                        style="color: green"></td>
+                                    <td th:text="${ooor.getOrderStatus().name()}"
+                                        th:if="${ooor.getOrderStatus().equals(ooor.getOrderStatus().CANCELED)}"
+                                        style="color: red"></td>
+                                    <td th:text="${ooor.getOrderStatus().name()}"
+                                        th:if="${ooor.getOrderStatus().equals(ooor.getOrderStatus().CLOSED)}"
+                                        style="color: lime"></td>
+                                    <td th:text="${ooor.getOrderStatus().name()}"
+                                        th:if="${ooor.getOrderStatus().equals(ooor.getOrderStatus().PAID)}"
+                                        style="color: black"></td>
+                                    <td th:text="${ooor.getAddress()}"></td>
+                                    <td th:text="${ooor.getTotalPrice()}"></td>
+                                    <td>
+                                        <a th:href="@{'/order/'+${ooor.id}}">
+                                            <button type="button" class="btn btn-primary">
+                                                Edit
+                                            </button>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- cart-area end -->
+
+</main>
+</body>
+</html>

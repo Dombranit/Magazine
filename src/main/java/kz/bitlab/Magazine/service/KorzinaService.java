@@ -9,11 +9,11 @@ public interface KorzinaService {
 
     void addProducts(Korzina korzina, Long id);
 
-    KorzinaDto getKorzinaByEmail(String name);
-
-    void commitKorzinaToOrder(String email);
+//    KorzinaDto getKorzinaByEmail(String name);
 
     void removeProduct(Korzina korzina, Long id);
+    void removeProductFromSession( Long id);
+
     void commitAnonymKorzinaToOrder(String email);
 
     KorzinaDto getKorzinaByAnonym();

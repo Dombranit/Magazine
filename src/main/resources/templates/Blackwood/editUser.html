@@ -1,0 +1,97 @@
+<!doctype html>
+<html class="no-js" lang="zxx"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="Blackwood/layout">
+<body>
+<main layout:fragment="content">
+    <!-- product-details-start -->
+    <section class="shop-details pt-90 pb-90">
+        <div class="container">
+            <div class="row">
+                <div class="col-xxl-3 col-xl-4">
+                    <div class="pproduct-sidebar-area mr-60">
+                        <div class="product-widget mb-30">
+                            <h5 class="pt-title mb-20" th:text="#{label.users}"></h5>
+                            <div class="widget-category-list">
+                                <img width="150" height="150" th:src="@{'/getAvatar/'+${user.avatar}}" class="rounded float-start">
+                            <label><h6>Email</h6></label>
+                            <span th:text="${user.getEmail()}"></span>
+                            <label><h6>Name</h6></label>
+                            <span th:text="${user.getFullName()}"></span>
+                            <label><h6>Address</h6></label>
+                            <span th:text="${user.getAddress()}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-9 col-xl-8">
+                    <div class="shop-main-area mb-40">
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade active show" id="tab1">
+                                <div class="row">
+                                    <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-6">
+                                        <div class="product__item mb-20">
+                                            <div>
+                                                <div>
+                                                    <h5 class="fw-bold">Add Role</h5>
+                                                    <table class="table table-striped table-group-divider">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">Add</th>
+                                                            <th scope="col">Role</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr th:each="role : ${roleList}" th:if="${user.getRoles()!=role.getRole()}">
+                                                            <th>
+                                                                <form th:action="@{'/role/assignee'}" method="post">
+                                                                    <input type="hidden" name="user_id" th:value="${user.getId()}">
+                                                                    <input type="hidden" name="role_id" th:value="${role.getId()}">
+                                                                    <button type="submit" class="btn btn-success">+</button>
+                                                                </form>
+                                                            </th>
+                                                            <td th:text="${role.getRole()}"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div>
+                                                    <h5 class="fw-bold">Remove Role</h5>
+                                                    <table class="table table-striped table-group-divider">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">Remove</th>
+                                                            <th scope="col">Role</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr th:each="role : ${user.getRoles()}">
+                                                            <th>
+                                                                <form th:action="@{'/role/unassignee'}" method="post">
+                                                                    <input type="hidden" name="user_id" th:value="${user.getId()}">
+                                                                    <input type="hidden" name="role_id" th:value="${role.getId()}">
+                                                                    <button type="submit" class="btn btn-danger">-</button>
+                                                                </form>
+                                                            </th>
+                                                            <td th:text="${role.getRole()}"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- product-details-end -->
+</main>
+</body>
+</html>

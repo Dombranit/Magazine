@@ -18,12 +18,13 @@ public class OrderDetails extends BaseEntity {
     private BigDecimal amount;
     private BigDecimal price;
     @ManyToOne
+    @ToString.Exclude
     private Product product;
 
     public OrderDetails(Orders orders, Product product, Long amount) {
         this.orders = orders;
-        this.amount = new BigDecimal(amount);
         this.product = product;
+        this.amount = new BigDecimal(amount);
         this.price = new BigDecimal(String.valueOf(product.getPrice()));
     }
 

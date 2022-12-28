@@ -1,0 +1,27 @@
+<html html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/navbar">
+<body>
+<div layout:fragment="site_content">
+    <h2>Wishlist</h2>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col" th:each="detail:${wishlist.getProducts()}">
+                <div class="card" style="width: 18rem;">
+                    <img width="250" height="350" th:src="@{'/getImage/'+${detail.productImage}}" class="card-img-top"
+                         alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${detail.title}"></h5>
+                        <h5 class="card-text" th:text="${detail.price}+' Tenge'"></h5>
+                        <a th:href="@{'/korzina/add/'+${detail.getId()}}" class="btn btn-success">Add to Korzina
+                        </a>
+                        <a th:href="@{'/wishlist/remove/'+${detail.getId()}}" class="btn btn-danger">-</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package kz.bitlab.Magazine.Controller;
 
 import kz.bitlab.Magazine.Entity.Category;
+import kz.bitlab.Magazine.dto.KorzinaDto;
 import kz.bitlab.Magazine.service.CategoryService;
 import kz.bitlab.Magazine.service.FileUpload.FileUploadService;
 import kz.bitlab.Magazine.service.KorzinaService;
@@ -31,6 +32,8 @@ public class HomeController {
     private FileUploadService fileUploadService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private KorzinaService korzinaService;
     @Value("${loadURL}")
     private String loadURL;
     @GetMapping(value = "/navbar")
@@ -38,6 +41,8 @@ public class HomeController {
         model.addAttribute("currentUser", userService.getUserData());
         List<Category> categoryList = categoryService.getCategories();
         model.addAttribute("categories", categoryList);
+        KorzinaDto korzinaDto = korzinaService.getKorzinaByAnonym();
+        model.addAttribute("korzina",korzinaDto);
         return "layout/navbar";
     }
 

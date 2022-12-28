@@ -1,0 +1,110 @@
+<!doctype html>
+<html class="no-js" lang="zxx"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="Blackwood/layout">
+<body>
+<main layout:fragment="content">
+    <!-- Modal -->
+    <div class="modal fade" id="addProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addProductLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{'/product/edit'}" method="post">
+                        <input type="hidden" th:value="${products.id}" class="form-control" name="product_id">
+                        <label>Title</label>
+                        <input type="text" th:value="${products.title}" class="form-control" name="product_title">
+                        <label>Price</label>
+                        <input type="text" th:value="${products.price}" class="form-control" name="product_price">
+                        <label class="form-control">Category</label>
+                        <select name="product_cat" class="form-control">
+                            <option th:each="cat:${categories}" th:value="${cat.id}"
+                                    th:text="${cat.name}"></option>
+                        </select>
+                        <label class="form-control">Country</label>
+                        <select name="product_country" class="form-control">
+                            <option th:each="country:${countries}" th:value="${country.id}"
+                                    th:text="${country.countryName}"></option>
+                        </select>
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- product-details-start -->
+    <section class="shop-details pt-90 pb-90">
+        <div class="container">
+            <div class="row">
+                <div class="col-xxl-3 col-xl-4">
+                    <div class="pproduct-sidebar-area mr-60">
+                        <div class="product-widget mb-30">
+                            <h5 class="pt-title mb-20" th:text="#{label.products}"></h5>
+                            <div class="widget-category-list">
+                                <img width="150" height="150" th:src="@{'/getImage/'+${products.getProductImage()}}" class="rounded float-start">
+                            <label><h6>Title</h6></label>
+                            <span th:text="${products.getTitle()}"></span>
+                            <label><h6>Category</h6></label>
+                            <span th:text="${cat.getName()}" th:each="cat:${products.getCategories()}"></span>
+                            <label><h6>Country</h6></label>
+                            <span th:text="${products.getCountry().getCountryName()}"></span>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProduct">
+                                    Edit Product
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-9 col-xl-8">
+                    <div class="shop-main-area mb-40">
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade active show" id="tab1">
+                                <div class="row">
+                                    <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-6">
+                                        <div class="product__item mb-20">
+                                            <div class="latest-comments mb-30">
+                                                <ul th:each="coment:${comments}"
+                                                    th:if="${products.getId()==coment.product.id}">
+                                                    <li>
+                                                        <div class="comments-box">
+                                                            <div class="comments-text">
+                                                                <div class="avatar-name">
+                                                                    <h5 th:text="${coment.users.fullName}"></h5>
+                                                                    <span th:text="${coment.getUsers().getEmail()}"></span>
+                                                                </div>
+                                                                <p th:text="${coment.getComment()}"></p>
+                                                            </div>
+                                                            <form th:action="@{'/comment/delete'}" method="post">
+                                                                <input type="hidden" th:value="${products.getId()}" name="product_id">
+                                                                <div class="col-xl-12">
+                                                                    <button class="add-cart-btn" type="submit"
+                                                                            sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MODERATOR')"
+                                                                            th:value="${coment.id}"
+                                                                            name="comment_id">Delete Comment
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- product-details-end -->
+</main>
+</body>
+</html>

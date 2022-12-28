@@ -1,0 +1,156 @@
+<!doctype html>
+<html class="no-js" lang="zxx"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="Blackwood/layout">
+<body>
+<main layout:fragment="content">
+    <!-- page__title-start -->
+    <section class="page__title p-relative d-flex align-items-center" data-background="/avatars/back.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="page__title-inner text-center">
+                        <h1 th:text="#{label.homepage}"></h1>
+                        <div class="page__title-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb justify-content-center">
+                                    <li class="breadcrumb-item active" aria-current="page"
+                                        th:text="#{label.homepage}"></li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- page__title-end -->
+
+    <!-- product-details-start -->
+    <section class="shop-details pt-90 pb-90">
+        <div class="container">
+            <div class="row">
+                <div class="col-xxl-3 col-xl-4">
+                    <div class="pproduct-sidebar-area mr-60">
+                        <div class="product-widget mb-30">
+                            <h5 class="pt-title mb-20">Product categories</h5>
+                            <div class="widget-category-list">
+                                <form>
+                                    <div class="single-widget-category" th:each="cat:${categories}">
+                                        <a th:href="@{'/product/sorted/'+${cat.id}}"
+                                           th:text="${cat.name}"></a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--                          Нужна сделать фильтр по ценам-->
+                        <div class="product-widget mb-30">
+                            <div class="single-widget">
+                                <h5 class="pt-title pb-20">Filter By Price</h5>
+                                <form action="#">
+                                    <div class="ui-price-slider">
+                                        <div class="slider-range">
+                                            <div id="slider-range"
+                                                 class="mb-20 ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content">
+                                                <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                                                <span tabindex="0"
+                                                      class="ui-slider-handle ui-corner-all ui-state-default"></span><span
+                                                    tabindex="0"
+                                                    class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-9">
+                                                    <p>
+                                                        <label for="amount">Price :</label>
+                                                        <input type="text" id="amount" readonly="">
+                                                    </p>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="text-end">
+                                                        <a href="#" class="sm-filter-title">Filter</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-9 col-xl-8">
+                    <div class="shop-main-area mb-40">
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade active show" id="tab1">
+                                <div class="row">
+                                    <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-6"
+                                    th:each="products:${sortedProduct}">
+                                        <div class="product__item mb-20">
+                                            <div class="product__thumb w-img fix">
+                                                <a th:href="@{'/product/'+${products.getId()}}">
+                                                    <img  width="240" height="280" th:src="@{'/getImage/'+${products.productImage}}"
+                                                         alt="">
+                                                </a>
+                                                <div class="product__action transition-3">
+                                                    <ul>
+                                                        <li>
+                                                            <a th:href="@{'/korzina/noUserKorzina/'+${products.id}}">
+                                                                <svg viewBox="0 0 22 22">
+                                                                    <g>
+                                                                        <path d="M18,19H6c-0.5,0-0.92-0.37-0.99-0.86L3.13,5H1C0.45,5,0,4.55,0,4s0.45-1,1-1h3c0.5,0,0.92,0.37,0.99,0.86L6.87,17h10.39
+                                                                           l2.4-8H11c-0.55,0-1-0.45-1-1s0.45-1,1-1h10c0.32,0,0.61,0.15,0.8,0.4c0.19,0.25,0.25,0.58,0.16,0.88l-3,10
+                                                                           C18.83,18.71,18.44,19,18,19z"></path>
+                                                                    </g>
+                                                                </svg>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a th:href="@{'/wishlist/'+${products.id}}">
+                                                                <svg viewBox="0 0 22 22">
+                                                                    <path d="M20.26,11.3c2.31-2.36,2.31-6.18-0.02-8.53C19.11,1.63,17.6,1,16,1c0,0,0,0,0,0c-1.57,0-3.05,0.61-4.18,1.71c0,0,0,0,0,0
+                                                                        L11,3.41l-0.81-0.69c0,0,0,0,0,0C9.06,1.61,7.58,1,6,1C4.4,1,2.89,1.63,1.75,2.77c-2.33,2.35-2.33,6.17-0.02,8.53
+                                                                        c0,0,0,0.01,0.01,0.01l0.01,0.01c0,0,0,0,0,0c0,0,0,0,0,0L11,20.94l9.25-9.62c0,0,0,0,0,0c0,0,0,0,0,0L20.26,11.3
+                                                                        C20.26,11.31,20.26,11.3,20.26,11.3z M3.19,9.92C3.18,9.92,3.18,9.92,3.19,9.92C3.18,9.92,3.18,9.91,3.18,9.91
+                                                                        c-1.57-1.58-1.57-4.15,0-5.73C3.93,3.42,4.93,3,6,3c1.07,0,2.07,0.42,2.83,1.18C8.84,4.19,8.85,4.2,8.86,4.21
+                                                                        c0.01,0.01,0.01,0.02,0.03,0.03l1.46,1.25c0.07,0.06,0.14,0.09,0.22,0.13c0.01,0,0.01,0.01,0.02,0.01c0.13,0.06,0.27,0.1,0.41,0.1
+                                                                        c0.08,0,0.16-0.03,0.25-0.05c0.03-0.01,0.07-0.01,0.1-0.02c0.07-0.03,0.13-0.07,0.2-0.11c0.03-0.02,0.07-0.03,0.1-0.06l1.46-1.24
+                                                                        c0.01-0.01,0.02-0.02,0.03-0.03c0.01-0.01,0.03-0.01,0.04-0.02C13.93,3.42,14.93,3,16,3c0,0,0,0,0,0c1.07,0,2.07,0.42,2.83,1.18
+                                                                        c1.56,1.58,1.56,4.15,0,5.73c0,0,0,0.01-0.01,0.01c0,0,0,0,0,0L11,18.06L3.19,9.92z"></path>
+                                                                </svg>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="product__content">
+                                                <div class="product__tag product__tag-4">
+                                                            <span th:each="cats:${products.getCategories()}">
+                                                                <a  th:text="' '+${cats.getName()}"></a>
+                                                            </span>
+                                                </div>
+                                                <h3 class="product__title">
+                                                    <a th:text="${products.getTitle()}+'/'+${products.getCountry().countryName}"></a>
+                                                </h3>
+                                                <div class="product__price product__price-4 mb-10">
+                                                    <span class="price" th:text="${products.getPrice()+'T'}"></span>
+                                                </div>
+                                                <div class="product__select-button">
+                                                    <a th:href="@{'/product/'+${products.getId()}}" class="select-btn w-100" th:text="#{label.about}"></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- product-details-end -->
+</main>
+</body>
+</html>

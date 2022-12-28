@@ -1,22 +1,23 @@
-<html html xmlns:th="http://www.thymeleaf.org"
+<!doctype html>
+<html class="no-js" lang="zxx"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      layout:decorate="layout/navbar">
+      layout:decorate="Blackwood/layout">
 <body>
-<div layout:fragment="site_content">
+<main layout:fragment="content">
     <h2>Korzina</h2>
     <div class="container text-center">
         <div class="row">
-            <div class="col" th:each="detail:${korzina.korzinaDetails}" sec:authorize="isAuthenticated()">
+            <div class="col" th:each="detail:${korzina.korzinaDetails}">
                 <div class="card" style="width: 18rem;">
                     <img width="250" height="350" th:src="@{'/getImage/'+${detail.getImage()}}" class="card-img-top"
                          alt="...">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${detail.title}"></h5>
-                        <h4 class="card-text" th:text="${detail.price}+' Tenge'"></h4>
+                        <h5 class="card-text" th:text="${detail.price}+' Tenge'"></h5>
                         <h4 class="card-text" th:text="${detail.sum}+' Tenge'"></h4>
-                        <a th:href="@{'/korzina/add/'+${detail.getProductId()}}" class="btn btn-success"
-                           sec:authorize="isAuthenticated()">+
+                        <a th:href="@{'/korzina/add/'+${detail.getProductId()}}" class="btn btn-success">+
                         </a>
                         <input class="card-text" th:value="${detail.amount}" type="text" readonly>
                         <a th:href="@{'/korzina/remove/'+${detail.productId}}" class="btn btn-danger">-</a>
@@ -24,37 +25,13 @@
                 </div>
             </div>
             <h3>Total Price<b th:text="${korzina.sum}+' Tenge'"></b></h3>
-            <form th:action="@{'/korzina'}" method="post" sec:authorize="isAuthenticated()">
-                <button type="submit" class="btn btn-success">
+            <form th:action="@{'/korzina/a'}" method="post">
+                <button type="submit" class="btn btn-tp-2">
                     Create Order
                 </button>
             </form>
-            <div class="col" th:each="detail:${korzina.korzinaDetails}" sec:authorize="isAnonymous()">
-                <div class="card" style="width: 18rem;">
-                    <img width="250" height="350" th:src="@{'/getImage/'+${detail.getImage()}}" class="card-img-top"
-                         alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${detail.title}"></h5>
-                        <h4 class="card-text" th:text="${detail.price}+' Tenge'"></h4>
-                        <h4 class="card-text" th:text="${detail.sum}+' Tenge'"></h4>
-                        <a th:href="@{'/korzina/add/'+${detail.getProductId()}}" class="btn btn-success"
-                           sec:authorize="isAuthenticated()">+
-                        </a>
-                        <input class="card-text" th:value="${detail.amount}" type="text" readonly>
-                        <a th:href="@{'/korzina/remove/'+${detail.productId}}" class="btn btn-danger">-</a>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
-    <div class="aa" sec:authorize="isAnonymous()">
-    <h3>Total Price<b th:text="${korzina.sum}+' Tenge'"></b></h3>
-    <form th:action="@{'/korzina'}" method="post" sec:authorize="isAnonymous()">
-        <button type="submit" class="btn btn-success">
-            Create Order
-        </button>
-    </form>
-    </div>
-</div>
+</main>
 </body>
 </html>

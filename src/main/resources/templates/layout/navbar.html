@@ -40,6 +40,8 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" sec:authorize="isAuthenticated()" th:href="@{'/order/myOrder'}"
                                    th:text="#{label.myOrder}"></a></li>
+                            <li><a class="dropdown-item" sec:authorize="isAuthenticated()" th:href="@{'/wishlist'}"
+                                   th:text="#{label.wishList}"></a> </li>
                             <li><a class="dropdown-item" th:href="@{'/profile'}" th:text="#{label.profile}"></a></li>
                             <li>
                                 <hr class="dropdown-divider">

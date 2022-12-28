@@ -1,0 +1,116 @@
+<!doctype html>
+<html class="no-js" lang="zxx"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="Blackwood/layout">
+<body>
+<main layout:fragment="content">
+    <!-- page__title-end -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCountry">
+        Add Country
+    </button>
+    <div id="addCountryAlertSuccess" style="visibility: hidden;" class="alert alert-success" role="alert">
+        Add Success!
+    </div>
+    <div id="editCountryAlertSuccess" style="visibility: hidden;" class="alert alert-success" role="alert">
+        Edit Success!
+    </div>
+    <div class="modal fade" id="addCountry" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addCountryLabel">Create Country</h1>
+                    <div id="addCountryAlert" style="visibility: hidden;" class="alert alert-danger" role="alert">
+                        Error has occurred!
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="addCountryName" class="form-label">Country Name</label>
+                            <input type="text" class="form-control" id="addCountryName" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" onclick="createCountry()">Add Country</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editCountry" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
+                    <div id="editCountryAlert" style="visibility: hidden;" class="alert alert-danger" role="alert">
+                        Error has occurred!
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="mx-auto mb-5">
+                        <input type="hidden" id="editCountryId">
+                        <div class="mb-3">
+                            <label for="editCountryName" class="form-label">Category Name</label>
+                            <input type="text" class="form-control" id="editCountryName" required>
+                        </div>
+                        <button id="editCountryCloseBtn" type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">Закрыть
+                        </button>
+                        <button type="submit" class="btn btn-success" onclick="updateCountry()">Save Country</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- cart-area start -->
+    <section class="cart-area pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form>
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="cart-product-name">ID</th>
+                                    <th class="product-price">Name</th>
+                                    <th class="product-subtotal"></th>
+                                    <th class="product-remove"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="country:${countries}">
+                                    <td class="product-name" th:text="${country.id}"></td>
+                                    <td class="product-price"><span class="amount"
+                                                                    th:text="${country.getCountryName()}"></span></td>
+                                    <td class="product-subtotal">
+                                        <a class="btn btn-primary" th:onclick="'getCountry('+${country.getId()}+')'"
+                                                data-bs-toggle="modal" data-bs-target="#editCountry">Edit</a>
+                                    </td>
+                                    <td class="product-remove">
+                                        <form th:action="@{'/category/delete'}" method="post">
+                                            <button type="submit" class="btn btn-danger" th:value="${country.id}"
+                                                    name="country_id">
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- cart-area end -->
+
+</main>
+</body>
+</html>

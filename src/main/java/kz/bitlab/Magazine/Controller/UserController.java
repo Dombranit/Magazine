@@ -2,7 +2,9 @@ package kz.bitlab.Magazine.Controller;
 
 import kz.bitlab.Magazine.Entity.Role;
 import kz.bitlab.Magazine.Entity.Users;
+import kz.bitlab.Magazine.dto.KorzinaDto;
 import kz.bitlab.Magazine.dto.UserDto;
+import kz.bitlab.Magazine.service.KorzinaService;
 import kz.bitlab.Magazine.service.RoleService;
 import kz.bitlab.Magazine.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,24 +24,32 @@ public class UserController {
     private RoleService roleService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private KorzinaService korzinaService;
 
     @GetMapping(value = "/login")
     public String login(Model model) {
         model.addAttribute("currentUser", userService.getUserData());
-        return "login";
+        KorzinaDto korzinaDto = korzinaService.getKorzinaByAnonym();
+        model.addAttribute("korzina",korzinaDto);
+        return "Blackwood/sign-in";
     }
 
     @GetMapping(value = "/profile")
     @PreAuthorize("isAuthenticated()")
     public String profile(Model model) {
         model.addAttribute("currentUser", userService.getUserData());
-        return "profile";
+        KorzinaDto korzinaDto = korzinaService.getKorzinaByAnonym();
+        model.addAttribute("korzina",korzinaDto);
+        return "Blackwood/contact";
     }
 
     @GetMapping(value = "/register")
     public String register(Model model) {
         model.addAttribute("currentUser", userService.getUserData());
-        return "register";
+        KorzinaDto korzinaDto = korzinaService.getKorzinaByAnonym();
+        model.addAttribute("korzina",korzinaDto);
+        return "Blackwood/sign-up";
     }
 
     @PostMapping(value = "/register")
@@ -67,7 +77,9 @@ public class UserController {
         List<Users> usersList = userService.getUsers();
         model.addAttribute("Users", usersList);
         model.addAttribute("currentUser", userService.getUserData());
-        return "user_change";
+        KorzinaDto korzinaDto = korzinaService.getKorzinaByAnonym();
+        model.addAttribute("korzina",korzinaDto);
+        return "Blackwood/admin_users";
     }
 
     @GetMapping(value = "users/{id}")
@@ -79,7 +91,10 @@ public class UserController {
         List<Role> roleList = roleService.getAllRoles();
         roleList.removeAll(users.getRoles());
         model.addAttribute("roleList",roleList);
-        return "editUser";
+        KorzinaDto korzinaDto = korzinaService.getKorzinaByAnonym();
+        model.addAttribute("korzina",korzinaDto);
+
+        return "Blackwood/editUser";
     }
 
     @PostMapping(value = "/editUser")

@@ -30,6 +30,6 @@ public class CommentController {
     public String deleteComment(@RequestParam(name = "comment_id") Long id,
                                 @RequestParam(name = "product_id")Long productId){
         commentService.deleteComment(id);
-        return "redirect:/product"+productId;
+        return "redirect:/product/"+productId;
     }
 }

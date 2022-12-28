@@ -2,6 +2,8 @@ package kz.bitlab.Magazine.Controller;
 
 import kz.bitlab.Magazine.Entity.OrderStatus;
 import kz.bitlab.Magazine.Entity.Orders;
+import kz.bitlab.Magazine.dto.KorzinaDto;
+import kz.bitlab.Magazine.service.KorzinaService;
 import kz.bitlab.Magazine.service.OrderService;
 import kz.bitlab.Magazine.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ public class OrderController {
     private OrderService orderService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private KorzinaService korzinaService;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MODERATOR')")
@@ -27,20 +31,24 @@ public class OrderController {
         List<Orders> ordersList = orderService.getOrders();
         model.addAttribute("orders", ordersList);
         model.addAttribute("currentUser", userService.getUserData());
-        return "order_change";
+        KorzinaDto korzinaDto = korzinaService.getKorzinaByAnonym();
+        model.addAttribute("korzina",korzinaDto);
+        return "Blackwood/admin_orders";
     }
 
     @GetMapping(value = "/{id}")
     public String getOrder(Model model, @PathVariable(name = "id") Long id) {
         Orders orders = orderService.getOrder(id);
         model.addAttribute("order", orders);
+        KorzinaDto korzinaDto = korzinaService.getKorzinaByAnonym();
+        model.addAttribute("korzina",korzinaDto);
         model.addAttribute("currentUser", userService.getUserData());
         model.addAttribute("orderStatusN", OrderStatus.NEW);
         model.addAttribute("orderStatusA", OrderStatus.APPROVED);
         model.addAttribute("orderStatusC", OrderStatus.CANCELED);
         model.addAttribute("orderStatusClose", OrderStatus.CLOSED);
         model.addAttribute("orderStatusPaid", OrderStatus.PAID);
-        return "order";
+        return "Blackwood/order";
     }
 
     @PostMapping
@@ -59,7 +67,9 @@ public class OrderController {
         List<Orders> ordersList = orderService.sortedOrders(userService.getUserData());
         model.addAttribute("orders", ordersList);
         model.addAttribute("currentUser", userService.getUserData());
-        return "my_orders";
+        KorzinaDto korzinaDto = korzinaService.getKorzinaByAnonym();
+        model.addAttribute("korzina",korzinaDto);
+        return "Blackwood/myOrder";
     }
 
     @GetMapping(value = "/closed/{id}")

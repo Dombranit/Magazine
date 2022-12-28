@@ -1,0 +1,103 @@
+<!doctype html>
+<html class="no-js" lang="zxx"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="Blackwood/layout">
+<body>
+<main layout:fragment="content">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProduct">
+        Add Category
+    </button>
+    <div id="editCategoryAlertSuccess" style="visibility: hidden;" class="alert alert-success" role="alert">
+        Success!
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="addProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addProductLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form th:action="@{'/category/create'}" method="post">
+
+                    <div class="modal-body">
+                        <label>Name</label>
+                        <input type="text" name="category_name">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Add Category</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--    EditModal-->
+    <div class="modal fade" id="editCategory" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
+                    <div id="editCategoryAlert" style="visibility: hidden;" class="alert alert-danger" role="alert">
+                        Error has occurred!
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="mx-auto mb-5">
+                        <input type="hidden" id="editCategoryId">
+                        <div class="mb-3">
+                            <label for="editCategoryName" class="form-label">Category Name</label>
+                            <input type="text" class="form-control" id="editCategoryName" required>
+                        </div>
+                        <button id="editCategoryCloseBtn" type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">Закрыть
+                        </button>
+                        <button  type="submit" class="btn btn-success" onclick="updateCategory()">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- cart-area start -->
+    <section class="cart-area pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form>
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="product-price">ID</th>
+                                    <th class="cart-product-name">Category</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="cat:${categories}">
+                                    <td class="product-name" th:text="${cat.id}"></td>
+                                    <td class="product-price"><span class="amount" th:text="${cat.name}"></span></td>
+                                    <td class="product-subtotal"><a class="btn btn-primary" th:onclick="'getCategory('+${cat.id}+')'"
+                                                                    data-bs-toggle="modal" data-bs-target="#editCategory">Edit</a></td>
+                                    <td class="product-remove"><form th:action="@{'/category/delete'}" method="post">
+                                        <button type="submit" class="btn btn-danger" th:value="${cat.id}" name="category_id">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </form></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- cart-area end -->
+
+</main>
+</body>
+</html>

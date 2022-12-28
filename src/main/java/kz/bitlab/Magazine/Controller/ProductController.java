@@ -4,6 +4,7 @@ import kz.bitlab.Magazine.Entity.Category;
 import kz.bitlab.Magazine.Entity.Comments;
 import kz.bitlab.Magazine.Entity.Product;
 import kz.bitlab.Magazine.Entity.ProductCountry;
+import kz.bitlab.Magazine.dto.KorzinaDto;
 import kz.bitlab.Magazine.mapper.ProductMapper;
 import kz.bitlab.Magazine.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,21 +32,27 @@ public class ProductController {
     private ProductMapper productMapper;
     @Autowired
     private CountryService countryService;
+    @Autowired
+    private KorzinaService korzinaService;
 
 
     @GetMapping
     public String getProducts(Model model) {
-        List<Product> products = productService.getProductsToAdmin();
-        model.addAttribute("productList", products);
+        KorzinaDto korzinaDto = korzinaService.getKorzinaByAnonym();
+        model.addAttribute("korzina",korzinaDto);
         model.addAttribute("currentUser", userService.getUserData());
         List<Category> categoryList = categoryService.getCategories();
         model.addAttribute("categories", categoryList);
-        return "homepage";
+        List<Product> products = productService.getProductsToAdmin();
+        model.addAttribute("productList", products);
+        return "Blackwood/shop";
     }
 
     @GetMapping(value = "/admin")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MODERATOR')")
     public String getProductList(Model model) {
+        KorzinaDto korzinaDto = korzinaService.getKorzinaByAnonym();
+        model.addAttribute("korzina",korzinaDto);
         List<Product> productList = productService.getProductsToAdmin();
         model.addAttribute("products", productList);
         List<Category> categories = categoryService.getCategories();
@@ -53,7 +60,7 @@ public class ProductController {
         model.addAttribute("currentUser", userService.getUserData());
         List<ProductCountry> countryList = countryService.getCountries();
         model.addAttribute("countries",countryList);
-        return "product_change";
+        return "Blackwood/admin_product";
     }
 
     @PostMapping("/create")
@@ -79,15 +86,17 @@ public class ProductController {
 
     @GetMapping(value = "/edit/{id}")
     public String detEditProd(Model model, @PathVariable(name = "id") Long id) {
+        KorzinaDto korzinaDto = korzinaService.getKorzinaByAnonym();
+        model.addAttribute("korzina",korzinaDto);
         Product product = productService.getProductById(id);
         model.addAttribute("products", product);
-        model.addAttribute("categories", product.getCategories());
+        model.addAttribute("categories", categoryService.getCategories());
         List<Comments> commentsList = commentService.getComments();
         model.addAttribute("comments", commentsList);
         model.addAttribute("currentUser", userService.getUserData());
         List<ProductCountry> countries = countryService.getCountries();
         model.addAttribute("countries",countries);
-        return "editProduct";
+        return "Blackwood/editProduct";
     }
 
     @PostMapping(value = "/edit")
@@ -116,11 +125,15 @@ public class ProductController {
     @GetMapping(value = "/{id}")
     public String getProductbyId(Model model, @PathVariable(name = "id") Long id) {
         Product product = productService.getProductById(id);
-        model.addAttribute("product", productMapper.toDto(product));
+        model.addAttribute("product", product);
         model.addAttribute("currentUser", userService.getUserData());
         List<Comments> commentsList = commentService.getComments();
         model.addAttribute("comments", commentsList);
-        return "product";
+        List<Category> categoryList = categoryService.getCategories();
+        model.addAttribute("categories", categoryList);
+        KorzinaDto korzinaDto = korzinaService.getKorzinaByAnonym();
+        model.addAttribute("korzina",korzinaDto);
+        return "Blackwood/product-details";
     }
 
     @PostMapping(value = "/delete")
@@ -137,7 +150,9 @@ public class ProductController {
         List<Category> categories = categoryService.getCategories();
         model.addAttribute("categories",categories);
         model.addAttribute("currentUser",userService.getUserData());
-        return "sorted";
+        KorzinaDto korzinaDto = korzinaService.getKorzinaByAnonym();
+        model.addAttribute("korzina",korzinaDto);
+        return "Blackwood/sorted";
     }
 
 }

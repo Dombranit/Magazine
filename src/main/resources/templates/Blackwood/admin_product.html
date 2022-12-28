@@ -1,0 +1,100 @@
+<!doctype html>
+<html class="no-js" lang="zxx"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="Blackwood/layout">
+<body>
+<main layout:fragment="content">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProduct">
+        Add Product
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="addProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addProductLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form th:action="@{'/product/create'}" method="post">
+                    <div class="modal-body">
+                        <label>Title</label>
+                        <input type="text" name="product_title">
+                        <label>Price</label>
+                        <input type="text" name="product_price">
+                        <label>Category</label>
+                        <select name="product_cat_id">
+                            <option th:each="cat:${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+                        </select>
+                        <select name="product_country">
+                            <option th:each="country:${countries}" th:value="${country.id}" th:text="${country.countryName}"></option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Add Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- cart-area start -->
+    <section class="cart-area pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form>
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Image</th>
+                                    <th>Title</th>
+                                    <th>Price</th>
+                                    <th>Category</th>
+                                    <th>Country</th>
+                                    <th>Details</th>
+                                    <th>Delete</th>
+                                </tr>
+
+                                </thead>
+                                <tbody>
+                                <tr th:each="prod:${products}">
+                                    <td th:text="${prod.id}"></td>
+                                    <td class="product-thumbnail"><a th:href="@{'/product/'+${prod.getId()}}"><img
+                                            th:src="@{'/getImage/'+${prod.getProductImage()}}" alt=""></a></td>
+                                    <td th:text="${prod.title}"></td>
+                                    <td th:text="${prod.price}"></td>
+                                    <td th:text="${cat.getName()}" th:each="cat:${prod.getCategories()}"></td>
+                                    <td th:text="${prod.getCountry().getCountryName()}"> </td>
+                                    <td>
+                                        <a th:href="@{'/product/edit/'+${prod.id}}">
+                                            <button type="button" class="btn btn-primary">
+                                                Edit
+                                            </button>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <form th:action="@{'/product/delete'}" method="post">
+                                            <button type="submit" class="btn btn-danger" th:value="${prod.id}" name="product_id">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- cart-area end -->
+
+</main>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html class="no-js" lang="zxx"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="Blackwood/layout">
+<body>
+<main layout:fragment="content">
+    <!-- product-details-start -->
+    <section class="shop-details pt-90 pb-90">
+        <div class="container">
+            <div class="row">
+                <div class="col-xxl-3 col-xl-4">
+                    <div class="pproduct-sidebar-area mr-60">
+                        <div class="product-widget mb-30">
+                            <h5 class="pt-title mb-20" th:text="#{label.orders}"></h5>
+                            <label>Email</label>
+                            <h6 class="pt-title mb-20" th:text="${order.getUser().email}"></h6>
+                            <label>Name</label>
+                            <h6 class="pt-title mb-20" th:text="${order.getUser().getFullName()}"></h6>
+                            <label>Address</label>
+                            <h6 class="pt-title mb-20" th:text="${order.getAddress()}"></h6>
+                            <label>Total</label>
+                            <h6 class="pt-title mb-20" th:text="${order.getTotalPrice()}"></h6>
+                            <label>Order Status</label>
+                            <div class="widget-category-list">
+                                <form>
+                                    <div class="single-widget-category" >
+                                        <select  name="order_status" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                                            <option th:selected="${order.getOrderStatus().name()}"></option>
+                                            <option th:value="${orderStatusA}">APPROVED</option>
+                                            <option th:value="${orderStatusClose}">CLOSED</option>
+                                            <option th:value="${orderStatusC}">CANCELED</option>
+                                            <option th:value="${orderStatusPaid}">PAID</option>
+                                            <option th:value="${orderStatusN}">NEW</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-9 col-xl-8">
+                    <div class="shop-main-area mb-40">
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade active show" id="tab1">
+                                <div class="row">
+                                    <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-6"
+                                    th:each="products:${order.getOrderDetails()}">
+                                        <div class="product__item mb-20">
+                                            <div class="product__thumb w-img fix">
+                                                <a th:href="@{'/product/'+${products.getId()}}">
+                                                    <img  width="240" height="280" th:src="@{'/getImage/'+${products.getProduct().getProductImage()}}"
+                                                         alt="">
+                                                </a>
+                                            </div>
+                                            <div class="product__content">
+                                                <div class="product__tag product__tag-4">
+                                                            <span th:each="cats:${products.getProduct().getCategories()}">
+                                                                <a  th:text="' '+${cats.getName()}"></a>
+                                                            </span>
+                                                </div>
+                                                <h3 class="product__title">
+                                                    <a th:text="${products.getProduct().getTitle()}+'/'+${products.getProduct().getCountry().getCountryName()}"></a>
+                                                </h3>
+                                                <div class="product__price product__price-4 mb-10">
+                                                    <span class="price" th:text="${products.getPrice()+'T'}"></span>
+                                                </div>
+                                                <div class="product__select-button">
+                                                    <a th:href="@{'/product/'+${products.getId()}}" class="select-btn w-100" th:text="#{label.about}"></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- product-details-end -->
+</main>
+</body>
+</html>
